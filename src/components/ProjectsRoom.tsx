@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { RigidBody } from '@react-three/rapier';
-import { Text, RoundedBox, useCursor, Float } from '@react-three/drei';
+import { Text, RoundedBox, useCursor, Float, Sky, Clouds, Cloud } from '@react-three/drei';
 import { useSpring, animated } from '@react-spring/three';
 import * as THREE from 'three';
 
@@ -234,9 +234,30 @@ export function ProjectsRoom() {
         </mesh>
       </RigidBody>
 
-      {/* Cyberpunk Lighting */}
-      <pointLight position={[35, 4, 0]} intensity={1.5} color="#b829ea" distance={50} decay={2} castShadow />
-      <ambientLight intensity={0.2} color="#4361ee" />
+      {/* Sun and Sky Lighting (2pm position) */}
+      <Sky sunPosition={[45, 120, 45]} turbidity={0.3} rayleigh={1} />
+      <ambientLight intensity={0.6} color="#f0f8ff" />
+      <directionalLight
+        position={[45, 120, 45]}
+        intensity={2.5}
+        color="#fff5e6"
+        castShadow
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-near={0.5}
+        shadow-camera-far={250}
+        shadow-camera-left={-80}
+        shadow-camera-right={80}
+        shadow-camera-top={80}
+        shadow-camera-bottom={-80}
+      />
+
+      {/* Lightweight Clouds (Higher in the sky) */}
+      <Clouds limit={400} material={THREE.MeshLambertMaterial}>
+        <Cloud position={[35, 95, -15]} speed={0.2} opacity={0.5} bounds={[15, 2, 2]} volume={10} color="#ffffff" />
+        <Cloud position={[55, 105, 10]} speed={0.2} opacity={0.5} bounds={[15, 2, 2]} volume={10} color="#ffffff" />
+        <Cloud position={[25, 90, 5]} speed={0.2} opacity={0.5} bounds={[15, 2, 2]} volume={10} color="#ffffff" />
+      </Clouds>
 
       {/* Project Displays */}
       {projects.map((project, i) => (
