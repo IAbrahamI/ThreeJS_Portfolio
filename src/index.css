@@ -80,28 +80,265 @@ body {
   color: #333;
 }
 
-/* Exhibit HTML overlay styles */
-.exhibit-info {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  width: 320px;
-  pointer-events: auto;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  transform: translate3d(0,0,0);
+/* ---- Title / home screen ---- */
+.title-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Opaque bright-blue: the map loads invisibly behind this. */
+  background:
+    radial-gradient(circle at 50% 22%, #6fc0ff 0%, transparent 62%),
+    linear-gradient(160deg, #3d92f0 0%, #2f7ae6 50%, #1f5fc8 100%);
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-.exhibit-title {
-  font-size: 1.5rem;
+.title-card {
+  text-align: center;
+  max-width: 540px;
+  padding: 48px 56px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.title-eyebrow {
+  font-size: 0.8rem;
   font-weight: 700;
-  margin-bottom: 8px;
-  color: #4a5d23; /* Earthy green */
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8ff6ff;
 }
 
-.exhibit-content {
+.title-name {
+  margin-top: 10px;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+}
+
+.title-role {
+  margin-top: 4px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.title-blurb {
+  margin: 20px auto 0;
+  max-width: 420px;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.title-start {
+  margin-top: 32px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #143a4a;
+  background: #8ff6ff;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 240, 255, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.title-start:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(0, 240, 255, 0.5);
+  background: #b4faff;
+}
+
+.title-start:disabled {
+  cursor: default;
+  background: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+}
+
+.title-progress {
+  margin: 18px auto 0;
+  width: 220px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.title-progress-fill {
+  height: 100%;
+  background: #8ff6ff;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.title-controls {
+  margin-top: 28px;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ---- Pause menu ---- */
+.pause-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 14, 26, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.pause-card {
+  width: 420px;
+  max-width: calc(100vw - 40px);
+  padding: 32px 36px;
+  border-radius: 24px;
+  background: rgba(20, 30, 50, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.pause-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.pause-primary,
+.pause-secondary {
+  width: 100%;
+  font-family: inherit;
   font-size: 1rem;
-  line-height: 1.5;
-  color: #555;
+  font-weight: 700;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.pause-primary {
+  color: #143a4a;
+  background: #8ff6ff;
+}
+
+.pause-primary:hover { transform: translateY(-1px); background: #b4faff; }
+
+.pause-secondary {
+  margin-top: 20px;
+  color: #ffd9d9;
+  background: rgba(255, 90, 90, 0.18);
+  border: 1px solid rgba(255, 120, 120, 0.4);
+}
+
+.pause-secondary:hover { background: rgba(255, 90, 90, 0.3); }
+
+.pause-section {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pause-subhead {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 12px;
+}
+
+.pause-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.pause-sens {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pause-sens input[type='range'] { width: 140px; accent-color: #8ff6ff; }
+.pause-sens-value { width: 34px; text-align: right; color: #8ff6ff; }
+
+.pause-key {
+  min-width: 88px;
+  font-family: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.pause-key:hover { background: rgba(255, 255, 255, 0.2); }
+.pause-key.listening {
+  background: rgba(143, 246, 255, 0.25);
+  border-color: #8ff6ff;
+  color: #8ff6ff;
+}
+
+/* ---- Resume prompt (Esc from the pause menu) ---- */
+.resume-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(8, 14, 26, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.resume-hint {
+  text-align: center;
+  color: #fff;
+  user-select: none;
+}
+
+.resume-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.resume-sub {
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
 }
