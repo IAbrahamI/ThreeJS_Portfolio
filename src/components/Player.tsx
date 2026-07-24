@@ -1,12 +1,14 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useKeyboardControls } from '@react-three/drei';
 import { RigidBody, RapierRigidBody, CapsuleCollider } from '@react-three/rapier';
 import { Euler, Vector3 } from 'three';
 import { PointerLockControls } from '@react-three/drei';
+import { gameStore, useGameState, controlsRef, playerApi } from '../state/gameStore';
 
 const SPEED = 12;
 const JUMP_FORCE = 8;
+const SPAWN = { x: 0, y: 2, z: 0 };
 const direction = new Vector3();
 const frontVector = new Vector3();
 const sideVector = new Vector3();
@@ -15,12 +17,32 @@ const euler = new Euler(0, 0, 0, 'YXZ');
 
 export function Player() {
   const ref = useRef<RapierRigidBody>(null);
+  const pointerLockRef = useRef<any>(null);
   const contacts = useRef(0);
   const [, get] = useKeyboardControls();
+  const sensitivity = useGameState((s) => s.mouseSensitivity);
+
+  // Expose the pointer-lock instance and a respawn handle to the DOM UI so the
+  // title screen and pause menu can lock/unlock and "Unstuck" the player.
+  useEffect(() => {
+    controlsRef.current = pointerLockRef.current;
+    playerApi.current = {
+      respawn: () => {
+        const rb = ref.current;
+        if (!rb) return;
+        rb.setTranslation(SPAWN, true);
+        rb.setLinvel({ x: 0, y: 0, z: 0 }, true);
+        rb.setAngvel({ x: 0, y: 0, z: 0 }, true);
+        contacts.current = 0;
+      },
+    };
+    return () => {
+      controlsRef.current = null;
+      playerApi.current = null;
+    };
+  }, []);
 
   useFrame((state) => {
-    const { forward, backward, left, right, jump } = get();
-
     const rigidBody = ref.current;
     if (!rigidBody) return;
 
@@ -29,6 +51,15 @@ export function Player() {
     // Update camera to follow the player body
     const translation = rigidBody.translation();
     state.camera.position.set(translation.x, translation.y + 1.5, translation.z);
+
+    // Freeze the player while on the title screen or paused: kill horizontal
+    // drift but let gravity keep them grounded.
+    if (gameStore.get().phase !== 'playing') {
+      rigidBody.setLinvel({ x: 0, y: velocity.y, z: 0 }, true);
+      return;
+    }
+
+    const { forward, backward, left, right, jump } = get();
 
     // Movement calculation
     frontVector.set(0, 0, Number(backward) - Number(forward));
@@ -59,13 +90,28 @@ export function Player() {
 
   return (
     <>
-      <PointerLockControls />
+      <PointerLockControls
+        ref={pointerLockRef}
+        makeDefault
+        /* drei's default auto-lock listens on the whole document, so ANY click
+           would enter the game. A selector that matches nothing disables that;
+           we lock explicitly from the Start / Resume buttons instead. */
+        selector="#__no_autolock__"
+        pointerSpeed={sensitivity}
+        onLock={() => gameStore.set({ phase: 'playing' })}
+        onUnlock={() => {
+          // ESC (or losing focus when a project link opens in a new tab) drops
+          // pointer-lock. Route that into the pause menu instead of leaving the
+          // player stuck clicking to re-lock.
+          if (gameStore.get().phase === 'playing') gameStore.set({ phase: 'paused' });
+        }}
+      />
       <RigidBody
         ref={ref}
         colliders={false}
         mass={1}
         type="dynamic"
-        position={[0, 2, 0]}
+        position={[SPAWN.x, SPAWN.y, SPAWN.z]}
         enabledRotations={[false, false, false]}
         onCollisionEnter={() => { contacts.current += 1; }}
         onCollisionExit={() => { contacts.current -= 1; }}

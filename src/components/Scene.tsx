@@ -1,14 +1,10 @@
 import { Player } from './Player';
-import { Room } from './Room';
-import { SkillsRoom } from './SkillsRoom';
-import { ProjectsRoom } from './ProjectsRoom';
+import { Map } from './Map';
 
 export function Scene() {
   return (
     <>
-      <Room />
-      <SkillsRoom />
-      <ProjectsRoom />
+      <Map />
       <Player />
     </>
   );
