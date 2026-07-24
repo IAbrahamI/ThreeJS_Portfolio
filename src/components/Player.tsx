@@ -4,11 +4,12 @@ import { useKeyboardControls } from '@react-three/drei';
 import { RigidBody, RapierRigidBody, CapsuleCollider } from '@react-three/rapier';
 import { Euler, Vector3 } from 'three';
 import { PointerLockControls } from '@react-three/drei';
-import { gameStore, useGameState, controlsRef, playerApi } from '../state/gameStore';
+import { gameStore, useGameState, controlsRef, playerApi, pendingSpawn } from '../state/gameStore';
+import { ROOM_PADS, ROOM_ARRIVAL, TELEPORT_RADIUS } from '../rooms';
 
 const SPEED = 12;
 const JUMP_FORCE = 8;
-const SPAWN = { x: 0, y: 2, z: 0 };
+const R2 = TELEPORT_RADIUS * TELEPORT_RADIUS;
 const direction = new Vector3();
 const frontVector = new Vector3();
 const sideVector = new Vector3();
@@ -19,6 +20,9 @@ export function Player() {
   const ref = useRef<RapierRigidBody>(null);
   const pointerLockRef = useRef<any>(null);
   const contacts = useRef(0);
+  // Teleport is "armed" only when the player is clear of every pad, so standing
+  // on the arrival pad after a jump doesn't bounce them straight back.
+  const armed = useRef(true);
   const [, get] = useKeyboardControls();
   const sensitivity = useGameState((s) => s.mouseSensitivity);
 
@@ -28,12 +32,8 @@ export function Player() {
     controlsRef.current = pointerLockRef.current;
     playerApi.current = {
       respawn: () => {
-        const rb = ref.current;
-        if (!rb) return;
-        rb.setTranslation(SPAWN, true);
-        rb.setLinvel({ x: 0, y: 0, z: 0 }, true);
-        rb.setAngvel({ x: 0, y: 0, z: 0 }, true);
-        contacts.current = 0;
+        // Reset to the current room's arrival point.
+        pendingSpawn.current = ROOM_ARRIVAL[gameStore.get().room];
       },
     };
     return () => {
@@ -45,6 +45,18 @@ export function Player() {
   useFrame((state) => {
     const rigidBody = ref.current;
     if (!rigidBody) return;
+
+    // Consume a pending teleport/respawn before anything else.
+    if (pendingSpawn.current) {
+      const [x, y, z] = pendingSpawn.current;
+      rigidBody.setTranslation({ x, y, z }, true);
+      rigidBody.setLinvel({ x: 0, y: 0, z: 0 }, true);
+      rigidBody.setAngvel({ x: 0, y: 0, z: 0 }, true);
+      contacts.current = 0;
+      armed.current = false; // re-arms once clear of the arrival pad
+      pendingSpawn.current = null;
+      return;
+    }
 
     const velocity = rigidBody.linvel();
 
@@ -58,6 +70,25 @@ export function Player() {
       rigidBody.setLinvel({ x: 0, y: velocity.y, z: 0 }, true);
       return;
     }
+
+    // Teleport pads: trigger when standing on one (and armed).
+    const pads = ROOM_PADS[gameStore.get().room];
+    let onPad = false;
+    for (const pad of pads) {
+      const dx = translation.x - pad.center[0];
+      const dz = translation.z - pad.center[1];
+      if (dx * dx + dz * dz < R2) {
+        onPad = true;
+        if (armed.current) {
+          armed.current = false;
+          pendingSpawn.current = ROOM_ARRIVAL[pad.to];
+          gameStore.set({ room: pad.to });
+          return;
+        }
+        break;
+      }
+    }
+    if (!onPad) armed.current = true;
 
     const { forward, backward, left, right, jump } = get();
 
@@ -111,7 +142,7 @@ export function Player() {
         colliders={false}
         mass={1}
         type="dynamic"
-        position={[SPAWN.x, SPAWN.y, SPAWN.z]}
+        position={ROOM_ARRIVAL.hub}
         enabledRotations={[false, false, false]}
         onCollisionEnter={() => { contacts.current += 1; }}
         onCollisionExit={() => { contacts.current -= 1; }}

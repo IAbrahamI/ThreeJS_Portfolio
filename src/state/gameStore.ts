@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import type { RoomId } from '../rooms';
 
 /**
  * Tiny dependency-free store shared between the DOM UI (title screen, pause
@@ -12,9 +13,11 @@ interface GameState {
   phase: GamePhase;
   /** PointerLockControls pointerSpeed multiplier. */
   mouseSensitivity: number;
+  /** Currently mounted room. */
+  room: RoomId;
 }
 
-let state: GameState = { phase: 'title', mouseSensitivity: 1 };
+let state: GameState = { phase: 'title', mouseSensitivity: 1, room: 'hub' };
 const listeners = new Set<() => void>();
 
 export const gameStore = {
@@ -42,7 +45,15 @@ export const controlsRef: { current: { lock: () => void; unlock: () => void } | 
   current: null,
 };
 
-/** Imperative handle to respawn the player at the starting position ("Unstuck"). */
+/** Imperative handle to respawn the player at the current room's arrival point ("Unstuck"). */
 export const playerApi: { current: { respawn: () => void } | null } = {
+  current: null,
+};
+
+/**
+ * When set, the Player consumes it on the next frame: teleports to this position,
+ * zeroes velocity, and re-arms teleport detection. Set by the teleport trigger.
+ */
+export const pendingSpawn: { current: [number, number, number] | null } = {
   current: null,
 };
