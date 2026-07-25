@@ -10,42 +10,47 @@ export const ROOM_URL: Record<RoomId, string> = {
   north: '/models/north.glb', // observatory
 };
 
-export interface Pad {
-  /** Room-local xz center of the teleport pad (from the GLB geometry). */
-  center: [number, number];
-  /** Room the pad sends the player to. */
-  to: RoomId;
-}
-
-/** How close (xz) the player must be to a pad's center to trigger it. */
-export const TELEPORT_RADIUS = 1.4;
-
 /**
- * Teleport pads per room. Hub layout (player faces north/−z): left→skills,
- * right→projects, forward→observatory. Every other room has a single pad back
- * to the hub. HubTP_South (0, 3.8) is intentionally unwired — no room yet.
+ * Maps a teleport pad's GLB node base-name (parts are named `<base>_0..N`) to
+ * the room it sends the player to. Pad *positions* are read at runtime from the
+ * actual mesh bounding boxes (see Room.tsx), so they always match the geometry.
+ *
+ * Hub layout (player faces north/−z): left(West)→skills, right(East)→projects,
+ * forward(North)→observatory. `HubTP_South` is intentionally absent — no room yet.
  */
-export const ROOM_PADS: Record<RoomId, Pad[]> = {
-  hub: [
-    { center: [-3.77, 0], to: 'west' },
-    { center: [3.87, 0], to: 'east' },
-    { center: [0.02, -3.85], to: 'north' },
-  ],
-  east: [{ center: [-8.85, 0.02], to: 'hub' }],
-  west: [{ center: [10.37, -0.03], to: 'hub' }],
-  north: [{ center: [0, 2.91], to: 'hub' }],
+export const PAD_DEST: Record<string, RoomId> = {
+  HubTP_West: 'west',
+  HubTP_East: 'east',
+  HubTP_North: 'north',
+  EastTeleport: 'hub',
+  WestTeleport: 'hub',
+  ObsTeleport: 'hub',
 };
 
+/** Extra margin (metres) added around a pad's footprint radius for triggering. */
+export const PAD_MARGIN = 0.4;
+
 /**
- * Where the player lands when entering each room. Offset off the return pad
- * (and toward the room interior) so they don't immediately re-trigger it.
- * Returning to the hub always drops the player at the starting position.
+ * Where the player lands when entering each room — placed on the FAR side from
+ * the return pad, so they walk through the room to leave (and never spawn on the
+ * pad). Returning to the hub always drops the player at the starting position.
  */
 export const ROOM_ARRIVAL: Record<RoomId, [number, number, number]> = {
   hub: [0, 1.3, 0],
-  east: [-6.2, 1.3, 0],
-  west: [7.9, 1.3, 0],
-  north: [0, 1.3, 0.3],
+  east: [4, 1.3, 0], // floor x[−7,7], pad at −4.4 → spawn at +x end, walk −x
+  west: [-6, 1.3, 0], // floor x[−8,9], pad at +6.5 → spawn at −x end, walk +x
+  north: [0, 1.3, 5], // floor z[3.7,17.7], pad at +15.7 → spawn at −z end, walk +z
+};
+
+/**
+ * Camera yaw (radians about Y) applied on arrival so the player faces into the
+ * room, not a wall. forward = (−sin θ, 0, −cos θ): 0=−z, π/2=−x, −π/2=+x, π=+z.
+ */
+export const ROOM_FACING: Record<RoomId, number> = {
+  hub: 0, // face north (−z), toward the north pad
+  east: Math.PI / 2, // face −x, into the projects room
+  west: -Math.PI / 2, // face +x, into the skills room
+  north: Math.PI, // face +z, into the observatory
 };
 
 /** Project holograms on the east room's Holo_Screen objects (east.glb local space). */

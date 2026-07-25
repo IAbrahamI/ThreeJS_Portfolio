@@ -4,12 +4,12 @@ import { useKeyboardControls } from '@react-three/drei';
 import { RigidBody, RapierRigidBody, CapsuleCollider } from '@react-three/rapier';
 import { Euler, Vector3 } from 'three';
 import { PointerLockControls } from '@react-three/drei';
-import { gameStore, useGameState, controlsRef, playerApi, pendingSpawn } from '../state/gameStore';
-import { ROOM_PADS, ROOM_ARRIVAL, TELEPORT_RADIUS } from '../rooms';
+import { gameStore, useGameState, controlsRef, playerApi, pendingSpawn, pendingYaw, activePads, beginTeleport } from '../state/gameStore';
+import { ROOM_ARRIVAL, ROOM_FACING } from '../rooms';
 
 const SPEED = 12;
 const JUMP_FORCE = 8;
-const R2 = TELEPORT_RADIUS * TELEPORT_RADIUS;
+const camEuler = new Euler(0, 0, 0, 'YXZ');
 const direction = new Vector3();
 const frontVector = new Vector3();
 const sideVector = new Vector3();
@@ -32,10 +32,13 @@ export function Player() {
     controlsRef.current = pointerLockRef.current;
     playerApi.current = {
       respawn: () => {
-        // Reset to the current room's arrival point.
-        pendingSpawn.current = ROOM_ARRIVAL[gameStore.get().room];
+        // Always return to the hub starting position, wherever the player is.
+        beginTeleport('hub', ROOM_ARRIVAL.hub, ROOM_FACING.hub);
       },
     };
+    (window as any).__go = (room: 'hub' | 'east' | 'west' | 'north') =>
+      beginTeleport(room, ROOM_ARRIVAL[room], ROOM_FACING[room]);
+    (window as any).__play = () => gameStore.set({ phase: 'playing' });
     return () => {
       controlsRef.current = null;
       playerApi.current = null;
@@ -52,6 +55,13 @@ export function Player() {
       rigidBody.setTranslation({ x, y, z }, true);
       rigidBody.setLinvel({ x: 0, y: 0, z: 0 }, true);
       rigidBody.setAngvel({ x: 0, y: 0, z: 0 }, true);
+      state.camera.position.set(x, y + 1.5, z);
+      // Face into the room so the player never lands looking at a wall.
+      if (pendingYaw.current !== null) {
+        camEuler.set(0, pendingYaw.current, 0, 'YXZ');
+        state.camera.quaternion.setFromEuler(camEuler);
+        pendingYaw.current = null;
+      }
       contacts.current = 0;
       armed.current = false; // re-arms once clear of the arrival pad
       pendingSpawn.current = null;
@@ -71,24 +81,25 @@ export function Player() {
       return;
     }
 
-    // Teleport pads: trigger when standing on one (and armed).
-    const pads = ROOM_PADS[gameStore.get().room];
+    // Teleport pads: trigger when standing on one (and armed). Positions/radii
+    // come from the mounted room's real geometry (see Room.tsx).
     let onPad = false;
-    for (const pad of pads) {
-      const dx = translation.x - pad.center[0];
-      const dz = translation.z - pad.center[1];
-      if (dx * dx + dz * dz < R2) {
+    for (const pad of activePads.current) {
+      const dx = translation.x - pad.x;
+      const dz = translation.z - pad.z;
+      if (dx * dx + dz * dz < pad.r * pad.r) {
         onPad = true;
         if (armed.current) {
           armed.current = false;
-          pendingSpawn.current = ROOM_ARRIVAL[pad.to];
-          gameStore.set({ room: pad.to });
+          beginTeleport(pad.to, ROOM_ARRIVAL[pad.to], ROOM_FACING[pad.to]);
           return;
         }
         break;
       }
     }
-    if (!onPad) armed.current = true;
+    // Only re-arm once the new room's pads have actually loaded — otherwise the
+    // empty-pads gap during a room swap would re-arm and instantly re-trigger.
+    if (!onPad && activePads.current.length > 0) armed.current = true;
 
     const { forward, backward, left, right, jump } = get();
 

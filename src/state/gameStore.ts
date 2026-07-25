@@ -15,9 +15,20 @@ interface GameState {
   mouseSensitivity: number;
   /** Currently mounted room. */
   room: RoomId;
+  /**
+   * True briefly during a room swap. While set, physics is paused so Rapier
+   * never steps against the old room's colliders as they're torn down (which
+   * panics the WASM and freezes the app).
+   */
+  transitioning: boolean;
 }
 
-let state: GameState = { phase: 'title', mouseSensitivity: 1, room: 'hub' };
+let state: GameState = {
+  phase: 'title',
+  mouseSensitivity: 1,
+  room: 'hub',
+  transitioning: false,
+};
 const listeners = new Set<() => void>();
 
 export const gameStore = {
@@ -57,3 +68,31 @@ export const playerApi: { current: { respawn: () => void } | null } = {
 export const pendingSpawn: { current: [number, number, number] | null } = {
   current: null,
 };
+
+/** Camera yaw (radians) to apply alongside the next pendingSpawn, or null to keep current. */
+export const pendingYaw: { current: number | null } = {
+  current: null,
+};
+
+/**
+ * Teleport pads for the currently mounted room, with real world positions +
+ * radii computed from the loaded GLB (see Room.tsx). The Player reads these each
+ * frame for trigger detection. Cleared while no room is mounted.
+ */
+export const activePads: { current: { x: number; z: number; r: number; to: RoomId }[] } = {
+  current: [],
+};
+
+/**
+ * Start a room swap: pause physics (via `transitioning`), switch the room, and
+ * queue the arrival position/facing for the Player to apply while paused.
+ */
+export function beginTeleport(
+  room: RoomId,
+  arrival: [number, number, number],
+  yaw: number,
+) {
+  pendingSpawn.current = arrival;
+  pendingYaw.current = yaw;
+  gameStore.set({ room, transitioning: true });
+}
