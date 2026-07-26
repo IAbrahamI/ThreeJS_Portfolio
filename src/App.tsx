@@ -8,6 +8,7 @@ import { RoomEnv } from './components/RoomEnv';
 import { TitleScreen } from './components/TitleScreen';
 import { PauseMenu } from './components/PauseMenu';
 import { ResumePrompt } from './components/ResumePrompt';
+import { FocusPanel } from './components/FocusPanel';
 import { gameStore, useGameState } from './state/gameStore';
 import { defaultBindings, toKeyboardMap, type MoveAction } from './state/keybindings';
 
@@ -56,7 +57,7 @@ export default function App() {
             {/* Bloom so emissive neon strips, holograms and stars actually glow.
                 High threshold = only very bright emissive blooms, not lit walls. */}
             <EffectComposer>
-              <Bloom mipmapBlur luminanceThreshold={1.0} intensity={0.8} radius={0.6} />
+              <Bloom mipmapBlur luminanceThreshold={0.9} intensity={0.55} radius={0.5} />
             </EffectComposer>
 
             {/* Perf helpers: drop resolution / throttle events under load. */}
@@ -80,6 +81,7 @@ export default function App() {
         {phase === 'title' && <TitleScreen />}
         {phase === 'paused' && <PauseMenu bindings={bindings} onRebind={rebind} />}
         {phase === 'resume' && <ResumePrompt />}
+        {phase === 'focus' && <FocusPanel />}
       </KeyboardControls>
 
       {/* Loader kept only as a fallback; the title screen shows load progress. */}

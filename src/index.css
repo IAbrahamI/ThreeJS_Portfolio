@@ -342,3 +342,66 @@ body {
   font-weight: 600;
   color: rgba(255, 255, 255, 0.85);
 }
+
+/* ---- Focus popup (CV / constellation) ---- */
+.focus-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 30%, rgba(40, 60, 110, 0.55), rgba(4, 6, 16, 0.85));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.focus-card {
+  position: relative;
+  width: 560px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  padding: 36px 40px;
+  border-radius: 22px;
+  background: rgba(14, 20, 38, 0.94);
+  border: 1px solid rgba(150, 190, 255, 0.25);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  color: #eef4ff;
+}
+
+.focus-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  font-size: 1.4rem;
+  line-height: 1;
+  font-family: inherit;
+  color: #cdddff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.focus-close:hover { background: rgba(255, 255, 255, 0.2); }
+
+.focus-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #bcd4ff;
+  margin-bottom: 16px;
+  padding-right: 30px;
+}
+
+.focus-body p {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: rgba(238, 244, 255, 0.9);
+}
+
+.focus-body .focus-gap { height: 10px; }

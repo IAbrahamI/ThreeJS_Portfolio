@@ -51,15 +51,15 @@ function CyberEnv() {
   return (
     <>
       <color attach="background" args={['#08080f']} />
-      <ambientLight intensity={0.14} color="#5566aa" />
+      <ambientLight intensity={0.18} color="#5566aa" />
       {/* Ceiling magenta strips (E_RoofNeon at 0,3.8,±3). */}
-      <pointLight position={[0, 3.5, 3]} intensity={22} distance={16} decay={2} color="#ff2d95" />
-      <pointLight position={[0, 3.5, -3]} intensity={22} distance={16} decay={2} color="#ff2d95" />
+      <pointLight position={[0, 3.5, 3]} intensity={7} distance={14} decay={2} color="#ff2d95" />
+      <pointLight position={[0, 3.5, -3]} intensity={7} distance={14} decay={2} color="#ff2d95" />
       {/* Cyan wall accents (low lines / hologram glow). */}
-      <pointLight position={[0, 1.3, 5]} intensity={14} distance={14} decay={2} color="#00e5ff" />
-      <pointLight position={[0, 1.3, -5]} intensity={14} distance={14} decay={2} color="#00e5ff" />
+      <pointLight position={[0, 1.3, 5]} intensity={5} distance={12} decay={2} color="#00e5ff" />
+      <pointLight position={[0, 1.3, -5]} intensity={5} distance={12} decay={2} color="#00e5ff" />
       {/* Far-wall magenta wash. */}
-      <pointLight position={[6, 2.6, 0]} intensity={12} distance={14} decay={2} color="#ff56c1" />
+      <pointLight position={[6, 2.6, 0]} intensity={4.5} distance={12} decay={2} color="#ff56c1" />
     </>
   );
 }
@@ -70,9 +70,9 @@ function SpaceEnv() {
     <>
       <color attach="background" args={['#01010a']} />
       <Stars radius={120} depth={60} count={6000} factor={4} saturation={0} fade speed={0.6} />
-      <ambientLight intensity={0.16} color="#4455aa" />
+      <ambientLight intensity={0.2} color="#4455aa" />
       {/* Soft cool fill over the observation deck so the brass/glass reads. */}
-      <pointLight position={[0, 5, 10.7]} intensity={18} distance={26} decay={2} color="#9fc4ff" />
+      <pointLight position={[0, 5, 10.7]} intensity={9} distance={26} decay={2} color="#9fc4ff" />
       <hemisphereLight args={['#20305a', '#05060f', 0.3]} />
     </>
   );

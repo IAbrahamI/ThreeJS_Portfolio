@@ -7,7 +7,12 @@ import type { RoomId } from '../rooms';
  * subscribe reactively via `useGameState`; the render loop reads imperatively
  * via `gameStore.get()`.
  */
-export type GamePhase = 'title' | 'playing' | 'paused' | 'resume';
+export type GamePhase = 'title' | 'playing' | 'paused' | 'resume' | 'focus';
+
+export interface FocusContent {
+  title: string;
+  body: string;
+}
 
 interface GameState {
   phase: GamePhase;
@@ -21,6 +26,8 @@ interface GameState {
    * panics the WASM and freezes the app).
    */
   transitioning: boolean;
+  /** Content shown by the focus popup (CV / constellation), or null. */
+  focus: FocusContent | null;
 }
 
 let state: GameState = {
@@ -28,6 +35,7 @@ let state: GameState = {
   mouseSensitivity: 1,
   room: 'hub',
   transitioning: false,
+  focus: null,
 };
 const listeners = new Set<() => void>();
 
@@ -95,4 +103,16 @@ export function beginTeleport(
   pendingSpawn.current = arrival;
   pendingYaw.current = yaw;
   gameStore.set({ room, transitioning: true });
+}
+
+/** Open the focus popup (CV / constellation text) and release pointer-lock. */
+export function openFocus(content: FocusContent) {
+  gameStore.set({ phase: 'focus', focus: content });
+  controlsRef.current?.unlock();
+}
+
+/** Close the focus popup and re-lock into play. */
+export function closeFocus() {
+  gameStore.set({ focus: null });
+  controlsRef.current?.lock();
 }

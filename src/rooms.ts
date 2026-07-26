@@ -56,48 +56,102 @@ export const ROOM_FACING: Record<RoomId, number> = {
 /** Project holograms on the east room's Holo_Screen objects (east.glb local space). */
 export const eastHotspots: ProjectHotspot[] = [
   {
-    name: 'Awesome Web App',
-    description: 'Interactive 3D world built with React, Three.js and Rapier physics.',
-    githubUrl: 'https://github.com/IAbrahamI/Kuroro',
+    name: 'Selfhosted Server',
+    description: 'Infrastructure-as-code — every config and script I use to set up and run my server.',
+    githubUrl: 'https://github.com/IAbrahamI/selfhostedServer',
     position: [-3.5, 2.13, -4],
     rotation: [0, 0, 0],
   },
   {
-    name: 'Python Data Scraper',
-    description: 'Fast Python scraper that harvests thousands of pages into a local DB.',
+    name: 'Kuroro',
+    description: 'Mobile app that reads manga from my personal API — my library, on the go.',
     githubUrl: 'https://github.com/IAbrahamI/Kuroro',
     position: [0, 2.13, -4],
     rotation: [0, 0, 0],
   },
   {
-    name: '3D Portfolio',
-    description: 'You are walking through it — a fully interactive 3D portfolio.',
-    githubUrl: 'https://github.com/IAbrahamI/Kuroro',
+    name: 'Pentest Assistant',
+    description: 'Tooling that streamlines security assessments and penetration-testing tasks.',
+    githubUrl: 'https://github.com/IAbrahamI/Pentest_Assistant',
     position: [3.5, 2.13, -4],
     rotation: [0, 0, 0],
   },
   {
-    name: 'Dockerized Microservices',
-    description: 'Docker + Kubernetes orchestrating Node.js and Java microservices.',
-    githubUrl: 'https://github.com/IAbrahamI/Kuroro',
+    name: 'Portfolio 2026',
+    description: 'This world — an interactive 3D portfolio built with React, Three.js and Rapier.',
+    githubUrl: 'https://github.com/IAbrahamI/ThreeJS_Portfolio',
     position: [-3.5, 2.13, 4],
     rotation: [0, Math.PI, 0],
   },
   {
-    name: 'Machine Learning Bot',
-    description: 'Discord bot powered by a custom-trained neural network.',
-    githubUrl: 'https://github.com/IAbrahamI/Kuroro',
+    name: 'Password Manager',
+    description: 'A secure password manager, designed and built entirely from scratch.',
+    githubUrl: 'https://github.com/IAbrahamI/Password_Manager',
     position: [0, 2.13, 4],
     rotation: [0, Math.PI, 0],
   },
   {
-    name: 'Open Source CLI Tool',
-    description: 'Go command-line utility for managing cloud infrastructure deploys.',
-    githubUrl: 'https://github.com/IAbrahamI/Kuroro',
+    name: 'Manga API Server',
+    description: 'Self-hosted API that serves manga data, running on my own server.',
+    githubUrl: 'https://github.com/IAbrahamI/MangaAPIServer',
     position: [3.5, 2.13, 4],
     rotation: [0, Math.PI, 0],
   },
 ];
 
-// Prefetch every room so teleports never wait on a download.
+/**
+ * Objects (by node-name regex) that should render but NOT generate colliders —
+ * floating particles, the animated core, and mid-air constellation pieces — so
+ * the player phases through them. null = everything in the room is solid.
+ */
+export const NON_COLLIDER: Record<RoomId, RegExp | null> = {
+  hub: null,
+  east: null,
+  west: null,
+  north: /Obs_Mote|Obs_Core|ConstStar|ConstGlow|ConstLine|CV_Finial/,
+};
+
+/** Clickable star/panel in a room that opens a focus popup. */
+export interface Hotspot {
+  position: [number, number, number];
+  radius: number;
+  title: string;
+  body: string;
+}
+
+/** North observatory: central star → CV, constellation stars → milestones. */
+export const northHotspots: Hotspot[] = [
+  {
+    position: [0, 2.5, 10.7], // Obs_Core (the floating central star)
+    radius: 0.7,
+    title: 'Abraham Neidhardt — CV',
+    // TODO: replace with your real CV content.
+    body: `Full-Stack Developer\n\nAbout\nShort intro about you goes here.\n\nExperience\n• Role — Company (year–year)\n• Role — Company (year–year)\n\nSkills\nReact · TypeScript · Three.js · Node · Python\n\nContact\nabraham.neidhardt@outlook.com`,
+  },
+  { position: [5.14, 2.9, 7.77], radius: 0.5, title: 'The Beginning', body: 'Earliest milestone — edit me.' },
+  { position: [5.54, 3.6, 8.87], radius: 0.5, title: 'First Steps', body: 'Milestone two — edit me.' },
+  { position: [5.64, 4.2, 10.07], radius: 0.5, title: 'Growth', body: 'Milestone three — edit me.' },
+  { position: [5.44, 4.8, 11.27], radius: 0.5, title: 'Now', body: 'Milestone four — edit me.' },
+  { position: [4.94, 5.3, 12.47], radius: 0.5, title: 'What’s Next', body: 'Future / goals — edit me.' },
+];
+
+/** Skill icons that hover over the west room's altars. */
+export const SKILL_ICONS_URL = '/models/skill_icons.glb';
+
+/** Maps each icon (by node name) to the xz center of the altar it hovers over. */
+export const ICON_ALTAR: Record<string, [number, number]> = {
+  Icon_Java: [6.03, -3.2],
+  Icon_JavaScript: [3.03, -3.2],
+  Icon_Python: [0.03, -3.2],
+  Icon_Kubernetes: [-2.97, -3.2],
+  Icon_Docker: [-5.97, -3.2],
+  Icon_Trino: [3.03, 3.2],
+  Icon_SQL: [0.03, 3.2],
+  Icon_Git: [-2.97, 3.2],
+  Icon_Shell: [-5.97, 3.2],
+  Icon_Blender: [6.03, 3.2],
+};
+
+// Prefetch every room + the skill icons so nothing waits on a download.
 Object.values(ROOM_URL).forEach((url) => useGLTF.preload(url));
+useGLTF.preload(SKILL_ICONS_URL);

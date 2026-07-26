@@ -36,9 +36,6 @@ export function Player() {
         beginTeleport('hub', ROOM_ARRIVAL.hub, ROOM_FACING.hub);
       },
     };
-    (window as any).__go = (room: 'hub' | 'east' | 'west' | 'north') =>
-      beginTeleport(room, ROOM_ARRIVAL[room], ROOM_FACING[room]);
-    (window as any).__play = () => gameStore.set({ phase: 'playing' });
     return () => {
       controlsRef.current = null;
       playerApi.current = null;
