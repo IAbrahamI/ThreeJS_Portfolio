@@ -47,42 +47,41 @@ export function ProjectHologram({ name, description, githubUrl, position, rotati
         />
       </mesh>
 
-      {/* Title */}
+      {/* Title — dark ink so it reads against the bright cyan glass. */}
       <Text
-        position={[0, 0.5, 0.08]}
-        fontSize={0.2}
-        color={hovered ? '#ffffff' : '#8ff6ff'}
+        position={[0, 0.42, 0.08]}
+        fontSize={0.15}
+        color={hovered ? '#00323f' : '#062a38'}
         anchorX="center"
         anchorY="middle"
-        maxWidth={2.4}
+        maxWidth={2.1}
         fontWeight="bold"
-        outlineWidth={0.006}
-        outlineColor="#003844"
       >
         {name}
       </Text>
 
       {/* Short description */}
       <Text
-        position={[0, -0.02, 0.08]}
-        fontSize={0.1}
-        color="#c9faff"
+        position={[0, 0.02, 0.08]}
+        fontSize={0.078}
+        color="#0b3543"
         anchorX="center"
         anchorY="middle"
-        maxWidth={2.35}
+        maxWidth={2.0}
         lineHeight={1.35}
-        fillOpacity={0.85}
       >
         {description}
       </Text>
 
       {/* Call to action */}
       <Text
-        position={[0, -0.58, 0.08]}
-        fontSize={0.1}
-        color={hovered ? '#ffffff' : '#00f0ff'}
+        position={[0, -0.42, 0.08]}
+        fontSize={0.08}
+        color={hovered ? '#00323f' : '#0a566b'}
         anchorX="center"
         anchorY="middle"
+        maxWidth={2.1}
+        fontWeight="bold"
       >
         Click to open in GitHub →
       </Text>

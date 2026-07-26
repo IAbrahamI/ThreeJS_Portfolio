@@ -1,10 +1,10 @@
 import { Player } from './Player';
-import { Map } from './Map';
+import { Rooms } from './Rooms';
 
 export function Scene() {
   return (
     <>
-      <Map />
+      <Rooms />
       <Player />
     </>
   );
