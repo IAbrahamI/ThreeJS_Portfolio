@@ -178,11 +178,17 @@ export const ICON_ALTAR: Record<string, [number, number]> = {
   Icon_Python: [0.03, -3.2],
   Icon_Kubernetes: [-2.97, -3.2],
   Icon_Docker: [-5.97, -3.2],
-  Icon_Trino: [3.03, 3.2],
+  Icon_ClaudeCode: [3.03, 3.2],
   Icon_SQL: [0.03, 3.2],
   Icon_Git: [-2.97, 3.2],
   Icon_Shell: [-5.97, 3.2],
   Icon_Blender: [6.03, 3.2],
+};
+
+/** Display-name overrides where stripping "Icon_" isn't enough. */
+export const ICON_LABELS: Record<string, string> = {
+  Icon_ClaudeCode: 'Claude Code',
+  Icon_JavaScript: 'JavaScript',
 };
 
 // Prefetch every room + the skill icons so nothing waits on a download.
