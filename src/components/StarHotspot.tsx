@@ -8,7 +8,7 @@ import type { Hotspot } from '../rooms';
  * Invisible clickable sphere placed over a star/panel. Clicking it (while
  * playing) opens the focus popup with that hotspot's content.
  */
-export function StarHotspot({ position, radius, title, body }: Hotspot) {
+export function StarHotspot({ position, radius, title, body, image, subtitle }: Hotspot) {
   const [hovered, setHovered] = useState(false);
   useCursor(hovered, 'pointer', 'auto');
 
@@ -20,7 +20,7 @@ export function StarHotspot({ position, radius, title, body }: Hotspot) {
       onClick={(e) => {
         e.stopPropagation();
         if (gameStore.get().phase !== 'playing') return;
-        openFocus({ title, body });
+        openFocus({ title, body, image, subtitle });
       }}
     >
       <sphereGeometry args={[radius, 16, 16]} />

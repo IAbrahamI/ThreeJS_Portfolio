@@ -117,23 +117,56 @@ export interface Hotspot {
   radius: number;
   title: string;
   body: string;
+  /** Optional logo shown in the popup's corner. */
+  image?: string;
+  /** Optional role/subtitle shown under the title. */
+  subtitle?: string;
 }
 
-/** North observatory: central star → CV, constellation stars → milestones. */
+/**
+ * North observatory: central star → CV, constellation stars → the timeline
+ * (earliest at ConstStar_0 / z 7.77, latest at ConstStar_4 / z 12.47).
+ */
 export const northHotspots: Hotspot[] = [
   {
     position: [0, 2.5, 10.7], // Obs_Core (the floating central star)
     radius: 0.7,
-    title: 'Abraham Neidhardt — CV',
-    // TODO: replace with your real CV content.
-    body: `Full-Stack Developer\n\nAbout\nShort intro about you goes here.\n\nExperience\n• Role — Company (year–year)\n• Role — Company (year–year)\n\nSkills\nReact · TypeScript · Three.js · Node · Python\n\nContact\nabraham.neidhardt@outlook.com`,
+    title: 'Abraham Neidhardt',
+    subtitle: 'Software Engineer, Cybersecurity Student',
+    body: `"Software engineer studying cybersecurity. Building systems in the morning, and learning how to break them in the afternoon."\n\nI am a software engineer passionate about modern architecture, agile environments, and modern security practices. Currently balancing a 60% engineering role while pursuing a degree in Cybersecurity, I bridge the gap between building scalable software and protecting it.\n\nI thrive in fast-paced, agile workflows where quick adaptation and cross-functional collaboration are key. As a native Spanish speaker fluent in English and German, with a working knowledge of French, I bring a global perspective to international teams and client-facing environments.\n\nOutside of my core work and studies, I focus on staying balanced. Whether that's keeping active through fitness, unwinding with music and gaming, or tinkering with my own personal coding projects.`,
   },
-  { position: [5.14, 2.9, 7.77], radius: 0.5, title: 'The Beginning', body: 'Earliest milestone — edit me.' },
-  { position: [5.54, 3.6, 8.87], radius: 0.5, title: 'First Steps', body: 'Milestone two — edit me.' },
-  { position: [5.64, 4.2, 10.07], radius: 0.5, title: 'Growth', body: 'Milestone three — edit me.' },
-  { position: [5.44, 4.8, 11.27], radius: 0.5, title: 'Now', body: 'Milestone four — edit me.' },
-  { position: [4.94, 5.3, 12.47], radius: 0.5, title: 'What’s Next', body: 'Future / goals — edit me.' },
+  {
+    position: [5.14, 2.9, 7.77], // ConstStar_0, earliest
+    radius: 0.5,
+    image: '/assets/KBW.png',
+    title: 'IMS (Informatikmittelschule), KBW',
+    body: `Aug 2018 - July 2021.\n\n• Learned the basics of programming with Java and JavaScript.\n• Studied the basics of other subjects such as Law, Science, Maths and Languages.\n• Created projects in teams using a Scrum and agile approach.`,
+  },
+  {
+    position: [5.54, 3.6, 8.87], // ConstStar_1
+    radius: 0.5,
+    image: '/assets/JuliusBaer.jpg',
+    title: 'Internship, Julius Baer',
+    body: `Aug 2021 to July 2022.\n\n• This internship was needed for my final degree as Software Engineer.\n• Implemented automations with Python scripts, which run weekly.\n• First approach with big data clusters and analysis.\n• Worked with an agile approach.`,
+  },
+  {
+    position: [5.64, 4.2, 10.07], // ConstStar_2
+    radius: 0.5,
+    image: '/assets/JuliusBaer.jpg',
+    title: 'Software Engineer, Julius Baer',
+    body: `Aug 2022 to 2024.\n\n• Developed and monitored new automated Python scripts in Kibana.\n• Managed access rights for all end-users and applications.\n• Implemented a new approach to simplify the onboarding of end-users.`,
+  },
+  {
+    position: [5.44, 4.8, 11.27], // ConstStar_3, latest shown
+    radius: 0.5,
+    image: '/assets/HSLU.png',
+    title: 'Bachelor of Information and Cybersecurity, Hochschule Luzern',
+    body: `2025 to present.\n\nGoal to improve and major into cybersecurity related topics such as pentesting, secure architecture, cloud security and mobile security.\n• Parallel to my studies, I am also continuously working on Julius Baer working 60% of my time as a Secure Architect and Software Engineer.\n• I am also working on my own projects to improve my skills and knowledge in the field of cybersecurity.`,
+  },
 ];
+
+/** Only 4 stars are used (0..3); hide the last star, its glow, and its line. */
+export const NORTH_HIDE = /ConstStar_4|ConstGlow_4|ConstLine_3/;
 
 /** Skill icons that hover over the west room's altars. */
 export const SKILL_ICONS_URL = '/models/skill_icons.glb';

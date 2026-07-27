@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, Text, Billboard } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { ProjectHologram } from './ProjectHologram';
 import { StarHotspot } from './StarHotspot';
 import { SkillIcons } from './SkillIcons';
-import { eastHotspots, northHotspots, NON_COLLIDER, PAD_DEST, PAD_MARGIN, type RoomId } from '../rooms';
+import { eastHotspots, northHotspots, NON_COLLIDER, NORTH_HIDE, PAD_DEST, PAD_MARGIN, type RoomId } from '../rooms';
 import { activePads } from '../state/gameStore';
 
 // Emissive strength: neon strips/stars vs teleport pads & pedestals. Tunable.
@@ -38,6 +38,9 @@ export function Room({ id, url }: { id: RoomId; url: string }) {
     root.traverse((obj) => {
       const mesh = obj as THREE.Mesh;
       if (!mesh.isMesh) return;
+
+      // Hide the unused constellation star (and its glow).
+      if (id === 'north' && NORTH_HIDE.test(mesh.name)) mesh.visible = false;
 
       mesh.castShadow = true;
       mesh.receiveShadow = true;
@@ -137,9 +140,38 @@ export function Room({ id, url }: { id: RoomId; url: string }) {
       {id === 'east' &&
         eastHotspots.map((p, i) => <ProjectHologram key={i} {...p} />)}
 
-      {/* Clickable stars (CV + constellation) in the observatory. */}
-      {id === 'north' &&
-        northHotspots.map((h, i) => <StarHotspot key={i} {...h} />)}
+      {/* Clickable stars, company logos, and the billboarded title. */}
+      {id === 'north' && (
+        <>
+          {northHotspots.map((h, i) => <StarHotspot key={i} {...h} />)}
+          <Billboard position={[5.4, 6.1, 9.5]}>
+            <Text
+              fontSize={0.5}
+              anchorX="center"
+              anchorY="middle"
+              fontWeight="bold"
+              color="#dfe9ff"
+              outlineWidth={0.02}
+              outlineColor="#0a1430"
+            >
+              Work Experience
+            </Text>
+          </Billboard>
+          <Billboard position={[0, 3.95, 10.7]}>
+            <Text
+              fontSize={0.42}
+              anchorX="center"
+              anchorY="middle"
+              fontWeight="bold"
+              color="#dfe9ff"
+              outlineWidth={0.018}
+              outlineColor="#0a1430"
+            >
+              About Me
+            </Text>
+          </Billboard>
+        </>
+      )}
 
       {/* Skill icons hovering over the altars in the skills room. */}
       {id === 'west' && <SkillIcons />}
