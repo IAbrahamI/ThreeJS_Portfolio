@@ -14,6 +14,13 @@ const NEON_EMISSIVE = 1.7;
 const PLATFORM_EMISSIVE = 1.9;
 const PLATFORM = /HoloPed|HoloCtr|Teleport|Plinth|Pad/;
 
+// Floating labels over each hub teleport pad (pad bbox centres are at ±6.6).
+const HUB_LABELS: { text: string; position: [number, number, number] }[] = [
+  { text: 'Skills', position: [-6.6, 2.2, 0] }, // west pad (left)
+  { text: 'Projects', position: [6.6, 2.2, 0] }, // east pad (right)
+  { text: 'About Me', position: [0, 2.2, -6.6] }, // north pad (forward)
+];
+
 /**
  * Loads and mounts a single room GLB. Only one Room is mounted at a time (see
  * Rooms.tsx), so its trimesh collider is the only physics geometry live and its
@@ -175,6 +182,24 @@ export function Room({ id, url }: { id: RoomId; url: string }) {
 
       {/* Skill icons hovering over the altars in the skills room. */}
       {id === 'west' && <SkillIcons />}
+
+      {/* Billboarded labels over each hub teleport pad. */}
+      {id === 'hub' &&
+        HUB_LABELS.map((l, i) => (
+          <Billboard key={i} position={l.position}>
+            <Text
+              fontSize={0.5}
+              anchorX="center"
+              anchorY="middle"
+              fontWeight="bold"
+              color="#1e2d3d"
+              outlineWidth={0.04}
+              outlineColor="#f5f8ff"
+            >
+              {l.text}
+            </Text>
+          </Billboard>
+        ))}
     </>
   );
 }
