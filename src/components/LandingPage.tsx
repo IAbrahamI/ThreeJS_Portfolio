@@ -196,9 +196,9 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
         </div>
         <div className="lp-marquee">
           <div className="lp-marquee-track">
-            {[0, 1].map((k) => (
+            {[0, 1, 2, 3].map((k) => (
               <span key={k} className="lp-mono">
-                <span>◆ SOFTWARE ENGINEERING</span><span className="lp-ac">◆ CYBERSECURITY</span><span>◆ PENTESTING</span><span>◆ SECURE ARCHITECTURE</span><span>◆ CLOUD SECURITY</span><span>◆ MOBILE SECURITY</span><span className="lp-ac">◆ BSC INFOSEC</span>
+                <span>◆ SOFTWARE ENGINEERING</span><span className="lp-ac">◆ CYBERSECURITY</span><span>◆ PENTESTING</span><span>◆ SECURE ARCHITECTURE</span><span className="lp-ac">◆ CLOUD SECURITY</span><span>◆ MOBILE SECURITY</span><span>◆ SOC</span><span className="lp-ac">◆ DEVOPS & OPS</span><span>◆ CI/CD PIPELINES</span><span className="lp-ac">◆ BSC INFOSEC</span>
               </span>
             ))}
           </div>
@@ -415,10 +415,44 @@ const CSS = `
 .lp-stat { background:var(--lp-bg); padding:22px 20px; }
 .lp-stat-n { font-family:'Archivo Black',sans-serif; font-size:44px; line-height:1; }
 .lp-stat-l { font-size:10px; letter-spacing:.16em; text-transform:uppercase; margin-top:8px; }
-.lp-marquee { margin:48px -40px -72px; border-top:1px solid var(--lp-dv); overflow:hidden; height:38px; display:flex; align-items:center; }
-.lp-marquee-track { display:flex; width:max-content; animation:lp-marquee 34s linear infinite; white-space:nowrap; font-size:10px; letter-spacing:.2em; color:var(--lp-mt); text-transform:uppercase; }
-.lp-marquee-track > span { flex:none; display:inline-flex; }
-.lp-marquee-track > span > span { padding-right:30px; }
+.lp-marquee { 
+  margin: 48px -40px -72px; 
+  border-top: 1px solid var(--lp-dv); 
+  overflow: hidden; 
+  height: 38px; 
+  display: flex; 
+  align-items: center; 
+}
+
+.lp-marquee-track { 
+  display: flex; 
+  width: max-content; 
+  animation: lp-marquee 34s linear infinite; 
+  white-space: nowrap; 
+  font-size: 10px; 
+  letter-spacing: .2em; 
+  color: var(--lp-mt); 
+  text-transform: uppercase; 
+}
+
+.lp-marquee-track > span { 
+  flex: none; 
+  display: inline-flex; 
+}
+
+.lp-marquee-track > span > span { 
+  padding-right: 30px; 
+}
+
+/* Add this keyframe block: */
+@keyframes lp-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-25%); /* Shifts exactly 1 copy out of 4 */
+  }
+}
 
 .lp-sechead { display:flex; align-items:baseline; flex-wrap:wrap; gap:18px; margin-bottom:32px; }
 .lp-sechead .lp-mono { font-size:11px; letter-spacing:.16em; }
