@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { gameStore, useGameState, controlsRef, playerApi } from '../state/gameStore';
+import './PauseMenu.css';
 import { actionLabels, prettyKey, type Bindings, type MoveAction } from '../state/keybindings';
 
 interface PauseMenuProps {

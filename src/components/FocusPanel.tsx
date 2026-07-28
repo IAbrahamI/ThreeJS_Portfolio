@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { gameStore, useGameState, closeFocus } from '../state/gameStore';
+import './FocusPanel.css';
 
 /**
  * Full-screen popup shown when the player clicks a star (CV or a constellation
