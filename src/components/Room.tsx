@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { ProjectHologram } from './ProjectHologram';
 import { StarHotspot } from './StarHotspot';
 import { SkillIcons } from './SkillIcons';
+import { ContactBoard } from './ContactBoard';
 import { eastHotspots, northHotspots, NON_COLLIDER, NORTH_HIDE, PAD_DEST, PAD_MARGIN, type RoomId } from '../rooms';
 import { activePads } from '../state/gameStore';
 
@@ -182,6 +183,9 @@ export function Room({ id, url }: { id: RoomId; url: string }) {
 
       {/* Skill icons hovering over the altars in the skills room. */}
       {id === 'west' && <SkillIcons />}
+
+      {/* Contact info on the hub's south reception board. */}
+      {id === 'hub' && <ContactBoard />}
 
       {/* Billboarded labels over each hub teleport pad. */}
       {id === 'hub' &&
