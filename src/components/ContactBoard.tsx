@@ -9,7 +9,7 @@ import { gameStore } from '../state/gameStore';
  */
 
 const CONTACTS: { label: string; url: string; y: number }[] = [
-  { label: 'abraham.neidhardt@outlook.com', url: 'mailto:abraham.neidhardt@outlook.com', y: 0.12 },
+  { label: 'abraham.neidhardt@proton.me', url: 'mailto:abraham.neidhardt@proton.me', y: 0.12 },
   { label: 'github.com/IAbrahamI', url: 'https://github.com/IAbrahamI', y: -0.08 },
   // TODO: replace with your real Instagram handle.
   { label: 'instagram.com/ab_neid_', url: 'https://instagram.com/ab_neid_', y: -0.28 },
