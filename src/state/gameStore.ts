@@ -12,6 +12,8 @@ export type GamePhase = 'title' | 'playing' | 'paused' | 'resume' | 'focus';
 export interface FocusContent {
   title: string;
   body: string;
+  image?: string;
+  subtitle?: string;
 }
 
 interface GameState {

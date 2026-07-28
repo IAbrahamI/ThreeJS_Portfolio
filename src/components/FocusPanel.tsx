@@ -23,11 +23,24 @@ export function FocusPanel() {
     <div className="focus-screen">
       <div className="focus-card">
         <button className="focus-close" onClick={closeFocus} aria-label="Close">×</button>
-        <h2 className="focus-title">{focus.title}</h2>
+
+        <div className="focus-header">
+          {focus.image && <img className="focus-logo" src={focus.image} alt="" />}
+          <div className="focus-heading">
+            <h2 className="focus-title">{focus.title}</h2>
+            {focus.subtitle && <p className="focus-subtitle">{focus.subtitle}</p>}
+          </div>
+        </div>
+
         <div className="focus-body">
-          {focus.body.split('\n').map((line, i) => (
-            <p key={i} className={line.trim() === '' ? 'focus-gap' : undefined}>{line}</p>
-          ))}
+          {focus.body.split('\n').map((line, i) => {
+            const t = line.trim();
+            if (t === '') return <div key={i} className="focus-gap" />;
+            if (t.startsWith('"') && t.endsWith('"')) {
+              return <blockquote key={i} className="focus-quote">{t}</blockquote>;
+            }
+            return <p key={i}>{line}</p>;
+          })}
         </div>
       </div>
     </div>

@@ -2,13 +2,13 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useGLTF, Text } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { SKILL_ICONS_URL, ICON_ALTAR } from '../rooms';
+import { SKILL_ICONS_URL, ICON_ALTAR, ICON_LABELS } from '../rooms';
 
 /** Height of the name labels above the floor (just above the altar caps). */
 const LABEL_Y = 1.85;
 
-/** Pretty display name from an "Icon_*" node name. */
-const label = (name: string) => name.replace(/^Icon_/, '');
+/** Pretty display name from an "Icon_*" node name (with overrides). */
+const label = (name: string) => ICON_LABELS[name] ?? name.replace(/^Icon_/, '');
 
 /**
  * Skill icons hovering over the west room's altars. The icons live in their own

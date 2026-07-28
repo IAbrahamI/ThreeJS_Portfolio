@@ -9,6 +9,7 @@ import { TitleScreen } from './components/TitleScreen';
 import { PauseMenu } from './components/PauseMenu';
 import { ResumePrompt } from './components/ResumePrompt';
 import { FocusPanel } from './components/FocusPanel';
+import { LandingPage } from './components/LandingPage';
 import { gameStore, useGameState } from './state/gameStore';
 import { defaultBindings, toKeyboardMap, type MoveAction } from './state/keybindings';
 
@@ -16,6 +17,7 @@ export default function App() {
   const phase = useGameState((s) => s.phase);
   const room = useGameState((s) => s.room);
   const transitioning = useGameState((s) => s.transitioning);
+  const [entered3D, setEntered3D] = useState(false);
   const [bindings, setBindings] = useState(defaultBindings);
   const keyboardMap = useMemo(() => toKeyboardMap(bindings), [bindings]);
 
@@ -30,6 +32,9 @@ export default function App() {
     const id = setTimeout(() => gameStore.set({ transitioning: false }), 200);
     return () => clearTimeout(id);
   }, [transitioning, room]);
+
+  // Show the one-page landing first; entering hands off to the 3D title screen.
+  if (!entered3D) return <LandingPage onEnter={() => setEntered3D(true)} />;
 
   return (
     <>

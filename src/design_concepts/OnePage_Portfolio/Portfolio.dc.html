@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,800;0,900&family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior:smooth; background:#0C0C0D; }
+  body { margin:0; background:#0C0C0D; }
+  * { box-sizing:border-box; }
+  a { color:var(--ac,#FF4A00); text-decoration:none; }
+  a:hover { color:var(--bg,#0C0C0D); background:var(--ac,#FF4A00); }
+  ::selection { background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D); }
+  @keyframes om-marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @keyframes om-blink { 0%,60% { opacity:1; } 61%,100% { opacity:0.15; } }
+  @keyframes om-flick { 0%,100% { opacity:.9 } 47% { opacity:.35 } 49% { opacity:1 } 52% { opacity:.5 } }
+  @keyframes om-sweep { from { transform:translateY(-100%) } to { transform:translateY(100vh) } }
+</style>
+</helmet>
+<div style="min-height:100vh; background:var(--bg,#0C0C0D); color:var(--tx,#E7E3D9); font-family:'Archivo',Helvetica,sans-serif; overflow-x:hidden">
+
+  <div aria-hidden="true" style="position:fixed; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(90deg,var(--dv,#26262A) 1px,transparent 1px); background-size:88px 100%; opacity:.55"></div>
+  <div aria-hidden="true" style="position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.3; background-image:repeating-linear-gradient(to bottom, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px)"></div>
+  <div aria-hidden="true" data-hell-glow="" style="position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0; transition:opacity 300ms ease; background:radial-gradient(120% 90% at 50% 110%, rgba(255,18,38,0.22), transparent 60%)"></div>
+  <div aria-hidden="true" style="position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden">
+    <div style="position:absolute; left:0; right:0; height:200px; background:linear-gradient(to bottom, transparent, rgba(255,255,255,0.035), transparent); animation:om-sweep 8s linear infinite"></div>
+  </div>
+
+  <div style="position:fixed; top:0; left:0; right:0; z-index:60; height:2px; background:transparent">
+    <div data-progress="" style="height:100%; width:0%; background:var(--ac,#FF4A00)"></div>
+  </div>
+
+  <div style="position:fixed; top:2px; left:0; right:0; z-index:50; display:flex; align-items:stretch; min-height:44px; flex-wrap:wrap; border-bottom:1px solid var(--dv,#26262A); background:var(--hd,rgba(12,12,13,0.92)); backdrop-filter:blur(8px); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase">
+    <div style="display:flex; align-items:center; gap:10px; padding:0 16px; background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D); font-weight:700">
+      <span style="width:8px; height:8px; background:var(--bg,#0C0C0D); display:block"></span>
+      KAI//MERCER
+    </div>
+    <div style="display:flex; align-items:center; gap:20px; padding:8px 20px; color:var(--mt,#7A7A80); flex:1; min-width:200px">
+      <span>[SWE_SEC]</span>
+      <span style="color:var(--tx,#E7E3D9)">SOFTWARE ENGINEER / SECURITY</span>
+      <span>ROTTERDAM — CET</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:18px; padding:8px 20px; border-left:1px solid var(--dv,#26262A)">
+      <a href="#about" data-navlink="about" style="color:inherit">ABOUT</a>
+      <a href="#work" data-navlink="work" style="color:inherit">PROJECTS</a>
+      <a href="#experience" data-navlink="experience" style="color:inherit">EXPERIENCE</a>
+      <a href="#skills" data-navlink="skills" style="color:inherit">SKILLS</a>
+      <a href="#contact" data-navlink="contact" style="color:inherit">CONTACT</a>
+    </div>
+    <button type="button" onClick="{{ toggleTheme }}" style="display:flex; align-items:center; gap:9px; padding:0 16px; border:0; border-left:1px solid var(--dv,#26262A); background:transparent; color:var(--tx,#E7E3D9); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer; min-height:44px" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)">
+      <span data-themedot="" style="width:8px; height:8px; border:1px solid currentColor; display:block"></span>
+      <span data-themelabel="">HELL MODE</span>
+    </button>
+  </div>
+
+  <div aria-hidden="true" style="position:fixed; right:18px; bottom:18px; z-index:55; display:grid; gap:4px; justify-items:end; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ac,#FF4A00)">
+    <span data-hud-scroll="">SCROLL 000%</span>
+    <span data-hud-sec="">SEC//ABOUT</span>
+    <span style="display:flex; align-items:center; gap:6px"><span style="width:5px; height:5px; background:var(--ac,#FF4A00); animation:om-blink 1.6s steps(1) infinite"></span>LINK SECURE</span>
+  </div>
+
+  <section id="about" style="position:relative; z-index:2; padding:120px 40px 0; border-bottom:1px solid var(--dv,#26262A)">
+    <div style="max-width:1440px; margin:0 auto">
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); padding-bottom:18px">
+        <span style="display:flex; align-items:center; gap:12px">
+          <span style="width:7px; height:7px; background:var(--ac,#FF4A00); animation:om-blink 2.4s steps(1) infinite"></span>
+          <span style="animation:om-flick 6s steps(1) infinite">SYS.ONLINE // OPEN TO 2026 SECURITY ENGINEERING ROLES</span>
+        </span>
+        <span>FILE 00 — OPERATOR DOSSIER / REV 2026.07</span>
+      </div>
+      <h1 style="font-family:'Archivo Black',Helvetica,sans-serif; font-size:clamp(56px,12.5vw,190px); line-height:0.84; letter-spacing:-0.04em; margin:0; text-transform:uppercase">
+        KAI<br><span style="color:var(--ac,#FF4A00)">MERCER</span>
+      </h1>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:48px; margin-top:40px; align-items:start">
+        <div>
+          <p style="font-size:19px; line-height:1.55; margin:0 0 18px; max-width:52ch; text-wrap:pretty">Software engineer studying cybersecurity — building the systems in the morning and learning how to break them in the afternoon.</p>
+          <p style="font-size:15px; line-height:1.7; color:var(--mt,#7A7A80); margin:0 0 28px; max-width:58ch; text-wrap:pretty">I write production backends for a living while finishing an MSc in Information Security, and I keep the two tracks deliberately entangled: every service I ship gets threat-modelled, every exploit I study gets rebuilt as a test. The result is code that assumes it will be attacked, and security work that respects what shipping actually costs.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:10px">
+            <a href="#work" style="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D); padding:13px 24px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700">VIEW PROJECTS →</a>
+            <a href="#contact" style="border:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9); padding:13px 24px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase">GET IN TOUCH</a>
+          </div>
+        </div>
+        <div style="border:1px solid var(--dv,#26262A)">
+          <div style="display:flex; justify-content:space-between; gap:16px; padding:13px 18px; border-bottom:1px solid var(--dv,#26262A)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">ROLE</span><span style="font-size:13px; text-align:right">Software Engineer II</span></div>
+          <div style="display:flex; justify-content:space-between; gap:16px; padding:13px 18px; border-bottom:1px solid var(--dv,#26262A)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">STUDYING</span><span style="font-size:13px; text-align:right">MSc Information Security</span></div>
+          <div style="display:flex; justify-content:space-between; gap:16px; padding:13px 18px; border-bottom:1px solid var(--dv,#26262A)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">BASED</span><span style="font-size:13px; text-align:right">Rotterdam, NL</span></div>
+          <div style="display:flex; justify-content:space-between; gap:16px; padding:13px 18px; border-bottom:1px solid var(--dv,#26262A)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">FOCUS</span><span style="font-size:13px; text-align:right">AppSec · Distributed systems</span></div>
+          <div style="display:flex; justify-content:space-between; gap:16px; padding:13px 18px"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">CVEs CREDITED</span><span style="font-size:13px; text-align:right; color:var(--ac,#FF4A00)">3</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1px; margin-top:56px; background:var(--dv,#26262A); border:1px solid var(--dv,#26262A)">
+        <div style="background:var(--bg,#0C0C0D); padding:22px 20px">
+          <div style="font-family:'Archivo Black',sans-serif; font-size:44px; line-height:1">6</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-top:8px">YEARS SHIPPING</div>
+        </div>
+        <div style="background:var(--bg,#0C0C0D); padding:22px 20px">
+          <div style="font-family:'Archivo Black',sans-serif; font-size:44px; line-height:1">42</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-top:8px">SERVICES HARDENED</div>
+        </div>
+        <div style="background:var(--bg,#0C0C0D); padding:22px 20px">
+          <div style="font-family:'Archivo Black',sans-serif; font-size:44px; line-height:1; color:var(--ac,#FF4A00)">180+</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-top:8px">FINDINGS TRIAGED</div>
+        </div>
+        <div style="background:var(--bg,#0C0C0D); padding:22px 20px">
+          <div style="font-family:'Archivo Black',sans-serif; font-size:44px; line-height:1">11</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-top:8px">CTF PODIUMS</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:48px -40px 0; border-top:1px solid var(--dv,#26262A); overflow:hidden; height:38px; display:flex; align-items:center">
+      <div style="display:flex; width:200%; animation:om-marquee 34s linear infinite; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--mt,#7A7A80); text-transform:uppercase; white-space:nowrap">
+        <span style="padding-right:30px">◆ SOFTWARE ENGINEERING</span><span style="padding-right:30px; color:var(--ac,#FF4A00)">◆ CYBERSECURITY</span><span style="padding-right:30px">◆ THREAT MODELLING</span><span style="padding-right:30px">◆ EXPLOIT DEV</span><span style="padding-right:30px">◆ DISTRIBUTED SYSTEMS</span><span style="padding-right:30px">◆ MSC INFOSEC 2026</span><span style="padding-right:30px; color:var(--ac,#FF4A00)">◆ AVAILABLE Q4</span>
+        <span style="padding-right:30px">◆ SOFTWARE ENGINEERING</span><span style="padding-right:30px; color:var(--ac,#FF4A00)">◆ CYBERSECURITY</span><span style="padding-right:30px">◆ THREAT MODELLING</span><span style="padding-right:30px">◆ EXPLOIT DEV</span><span style="padding-right:30px">◆ DISTRIBUTED SYSTEMS</span><span style="padding-right:30px">◆ MSC INFOSEC 2026</span><span style="padding-right:30px; color:var(--ac,#FF4A00)">◆ AVAILABLE Q4</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" style="position:relative; z-index:2; padding:72px 40px; border-bottom:1px solid var(--dv,#26262A)">
+    <div style="max-width:1440px; margin:0 auto">
+      <div style="display:flex; align-items:baseline; flex-wrap:wrap; gap:18px; margin-bottom:32px">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; color:var(--mt,#7A7A80)">[01//PROJECTS]</span>
+        <h2 style="font-family:'Archivo Black',sans-serif; font-size:clamp(28px,3.4vw,46px); text-transform:uppercase; letter-spacing:-0.02em; margin:0">SELECTED PROJECTS</h2>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-left:auto">SIX OF THE ONES I STILL THINK ABOUT</span>
+      </div>
+
+      <div style="border-top:1px solid var(--dv,#26262A); margin-bottom:44px">
+        <a href="#p01" style="display:grid; grid-template-columns:56px 1.5fr 1fr 120px 74px; gap:20px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)">
+          <span style="color:var(--mt,#7A7A80)">P/01</span><span style="font-family:'Archivo',sans-serif; font-weight:800; font-size:19px">TRIPWIRE MESH</span><span style="color:var(--mt,#7A7A80)">SECURITY TOOLING</span><span>2025</span><span style="color:var(--ac,#FF4A00)">OSS</span>
+        </a>
+        <a href="#p02" style="display:grid; grid-template-columns:56px 1.5fr 1fr 120px 74px; gap:20px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)">
+          <span style="color:var(--mt,#7A7A80)">P/02</span><span style="font-family:'Archivo',sans-serif; font-weight:800; font-size:19px">COLD LEDGER</span><span style="color:var(--mt,#7A7A80)">APPLIED CRYPTOGRAPHY</span><span>2025</span><span style="color:var(--ac,#FF4A00)">SOLO</span>
+        </a>
+        <a href="#p03" style="display:grid; grid-template-columns:56px 1.5fr 1fr 120px 74px; gap:20px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)">
+          <span style="color:var(--mt,#7A7A80)">P/03</span><span style="font-family:'Archivo',sans-serif; font-weight:800; font-size:19px">NORTHBOUND</span><span style="color:var(--mt,#7A7A80)">PLATFORM</span><span>2024</span><span style="color:var(--ac,#FF4A00)">TEAM</span>
+        </a>
+        <a href="#p04" style="display:grid; grid-template-columns:56px 1.5fr 1fr 120px 74px; gap:20px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)">
+          <span style="color:var(--mt,#7A7A80)">P/04</span><span style="font-family:'Archivo',sans-serif; font-weight:800; font-size:19px">GLASSHOUSE</span><span style="color:var(--mt,#7A7A80)">OFFENSIVE RESEARCH</span><span>2024</span><span style="color:var(--ac,#FF4A00)">CVE×3</span>
+        </a>
+        <a href="#p05" style="display:grid; grid-template-columns:56px 1.5fr 1fr 120px 74px; gap:20px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)">
+          <span style="color:var(--mt,#7A7A80)">P/05</span><span style="font-family:'Archivo',sans-serif; font-weight:800; font-size:19px">QUIETSTORM</span><span style="color:var(--mt,#7A7A80)">DETECTION ENGINEERING</span><span>2023</span><span style="color:var(--ac,#FF4A00)">SOLO</span>
+        </a>
+        <a href="#p06" style="display:grid; grid-template-columns:56px 1.5fr 1fr 120px 74px; gap:20px; align-items:center; padding:16px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)">
+          <span style="color:var(--mt,#7A7A80)">P/06</span><span style="font-family:'Archivo',sans-serif; font-weight:800; font-size:19px">BREAKROOM</span><span style="color:var(--mt,#7A7A80)">TEACHING</span><span>2023</span><span style="color:var(--ac,#FF4A00)">OSS</span>
+        </a>
+      </div>
+
+      <div style="display:grid; gap:1px; background:var(--dv,#26262A); border:1px solid var(--dv,#26262A)">
+
+        <div id="p01" style="background:var(--bg,#0C0C0D); display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
+          <div style="padding:32px; border-right:1px solid var(--dv,#26262A)">
+            <div style="display:flex; justify-content:space-between; gap:16px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-bottom:22px"><span>P/01 — SECURITY TOOLING</span><span>2025 · LEAD ENGINEER · OPEN SOURCE</span></div>
+            <h3 style="font-family:'Archivo Black',sans-serif; font-size:clamp(30px,3.6vw,52px); line-height:0.92; letter-spacing:-0.03em; text-transform:uppercase; margin:0 0 18px">TRIPWIRE<br>MESH</h3>
+            <p style="font-size:15px; line-height:1.65; color:var(--mt,#7A7A80); max-width:50ch; margin:0 0 20px; text-wrap:pretty">A deception layer for internal networks: thousands of cheap, believable honeytokens — fake credentials, decoy S3 keys, phantom admin endpoints — seeded across staging and production. Nothing legitimate ever touches them, so a single fetch is a high-signal alarm rather than another line in a noisy SIEM.</p>
+            <div style="border-top:1px solid var(--dv,#26262A); font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.5">
+              <div style="display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>Median red-team detection time fell from 4 days to 9 minutes.</span></div>
+              <div style="display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>Token minting and rotation run as a sidecar; zero app-code changes to adopt.</span></div>
+              <div style="display:flex; gap:12px; padding:11px 0"><span style="color:var(--ac,#FF4A00)">▸</span><span>False-positive rate under 0.4% across 42 onboarded services.</span></div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:22px">
+              <span style="border:1px solid var(--dv,#26262A); padding:6px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">GO</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:6px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">EBPF</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:6px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">TERRAFORM</span>
+            </div>
+          </div>
+          <div style="padding:32px; display:flex; flex-direction:column; gap:12px">
+            <div style="aspect-ratio:4/3; background:repeating-linear-gradient(135deg,rgba(255,255,255,0.05) 0 6px,transparent 6px 12px); border:1px solid var(--dv,#26262A); display:flex; align-items:center; justify-content:center; position:relative; text-align:center; padding:14px">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; color:var(--mt,#7A7A80); text-transform:uppercase">DROP: HONEYTOKEN CONSOLE — 4:3</span>
+              <span style="position:absolute; top:8px; left:8px; width:10px; height:10px; border-top:1px solid var(--ac,#FF4A00); border-left:1px solid var(--ac,#FF4A00)"></span>
+              <span style="position:absolute; bottom:8px; right:8px; width:10px; height:10px; border-bottom:1px solid var(--ac,#FF4A00); border-right:1px solid var(--ac,#FF4A00)"></span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+              <div style="aspect-ratio:1/1; background:repeating-linear-gradient(135deg,rgba(255,255,255,0.05) 0 6px,transparent 6px 12px); border:1px solid var(--dv,#26262A); display:flex; align-items:center; justify-content:center; text-align:center; padding:10px"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--mt,#7A7A80); text-transform:uppercase">DROP: ALERT FLOW</span></div>
+              <div style="aspect-ratio:1/1; background:repeating-linear-gradient(135deg,rgba(255,255,255,0.05) 0 6px,transparent 6px 12px); border:1px solid var(--dv,#26262A); display:flex; align-items:center; justify-content:center; text-align:center; padding:10px"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--mt,#7A7A80); text-transform:uppercase">DROP: TOKEN SCHEMA</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="p02" style="background:var(--bg,#0C0C0D); display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
+          <div style="padding:32px; display:flex; flex-direction:column; gap:12px; border-right:1px solid var(--dv,#26262A)">
+            <div style="aspect-ratio:16/10; background:repeating-linear-gradient(135deg,rgba(255,255,255,0.05) 0 6px,transparent 6px 12px); border:1px solid var(--dv,#26262A); display:flex; align-items:center; justify-content:center; text-align:center; padding:14px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; color:var(--mt,#7A7A80); text-transform:uppercase">DROP: MERKLE PROOF VIEWER — 16:10</span></div>
+            <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)"><span>FIG. 2.1 — INCLUSION PROOF</span><span>VERIFY &lt; 40MS</span></div>
+          </div>
+          <div style="padding:32px">
+            <div style="display:flex; justify-content:space-between; gap:16px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-bottom:22px"><span>P/02 — APPLIED CRYPTOGRAPHY</span><span>2025 · SOLO</span></div>
+            <h3 style="font-family:'Archivo Black',sans-serif; font-size:clamp(30px,3.6vw,52px); line-height:0.92; letter-spacing:-0.03em; text-transform:uppercase; margin:0 0 18px">COLD<br><span style="color:var(--ac,#FF4A00)">LEDGER</span></h3>
+            <p style="font-size:15px; line-height:1.65; color:var(--mt,#7A7A80); max-width:50ch; margin:0 0 20px; text-wrap:pretty">An append-only audit log where operators can prove nothing was quietly deleted. Entries are chained with a Merkle accumulator and witnessed hourly by an independent signer, so tampering is detectable even by someone who owns the database.</p>
+            <div style="border-top:1px solid var(--dv,#26262A); font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.5">
+              <div style="display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>Inclusion and consistency proofs verify in-browser under 40ms.</span></div>
+              <div style="display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>Survived an internal audit exercise with root database access granted.</span></div>
+              <div style="display:flex; gap:12px; padding:11px 0"><span style="color:var(--ac,#FF4A00)">▸</span><span>Threat model published as my MSc term paper.</span></div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:22px">
+              <span style="border:1px solid var(--dv,#26262A); padding:6px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">RUST</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:6px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">WASM</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:6px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">POSTGRES</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--bg,#0C0C0D); display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+          <div id="p03" style="padding:32px; border-right:1px solid var(--dv,#26262A)">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-bottom:18px">P/03 — PLATFORM · 2024</div>
+            <h3 style="font-family:'Archivo Black',sans-serif; font-size:clamp(26px,2.6vw,34px); line-height:0.94; letter-spacing:-0.02em; text-transform:uppercase; margin:0 0 14px">NORTHBOUND</h3>
+            <p style="font-size:14px; line-height:1.65; color:var(--mt,#7A7A80); margin:0 0 18px; text-wrap:pretty">An internal API gateway that made the secure path the lazy path: mutual TLS, scoped tokens, per-route rate limits and structured audit events arrive by default, and teams opt out loudly in review rather than quietly forgetting to opt in.</p>
+            <div style="border-top:1px solid var(--dv,#26262A); font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.5">
+              <div style="display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>New-service security review: two weeks → two days.</span></div>
+              <div style="display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>18k req/s at p99 under 30ms added latency.</span></div>
+              <div style="display:flex; gap:10px; padding:10px 0"><span style="color:var(--ac,#FF4A00)">▸</span><span>Policy is a versioned artifact — diffable, revertible.</span></div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:18px">
+              <span style="border:1px solid var(--dv,#26262A); padding:5px 9px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">GO</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:5px 9px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">ENVOY</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:5px 9px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">OPA</span>
+            </div>
+          </div>
+          <div id="p04" style="padding:32px; border-right:1px solid var(--dv,#26262A)">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-bottom:18px">P/04 — OFFENSIVE RESEARCH · 2024</div>
+            <h3 style="font-family:'Archivo Black',sans-serif; font-size:clamp(26px,2.6vw,34px); line-height:0.94; letter-spacing:-0.02em; text-transform:uppercase; margin:0 0 14px">GLASSHOUSE</h3>
+            <p style="font-size:14px; line-height:1.65; color:var(--mt,#7A7A80); margin:0 0 18px; text-wrap:pretty">A differential fuzzing harness for third-party SSO libraries. Two implementations parse the same crafted SAML and OIDC payloads; wherever they disagree about identity, there is usually a confused-deputy bug underneath.</p>
+            <div style="border-top:1px solid var(--dv,#26262A); font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.5">
+              <div style="display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>Three CVEs credited under 90-day coordinated disclosure.</span></div>
+              <div style="display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--dv,#26262A)"><span style="color:var(--ac,#FF4A00)">▸</span><span>Corpus and reproducers published for maintainers.</span></div>
+              <div style="display:flex; gap:10px; padding:10px 0"><span style="color:var(--ac,#FF4A00)">▸</span><span>Runs nightly against six vendored dependencies.</span></div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:18px">
+              <span style="border:1px solid var(--dv,#26262A); padding:5px 9px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">PYTHON</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:5px 9px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">AFL++</span>
+              <span style="border:1px solid var(--dv,#26262A); padding:5px 9px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mt,#7A7A80)">SAML/OIDC</span>
+            </div>
+          </div>
+          <div style="padding:32px; background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D); display:flex; flex-direction:column; gap:20px; justify-content:space-between">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; font-weight:700">P/05–06 — ARCHIVE</div>
+            <div id="p05">
+              <div style="font-family:'Archivo Black',sans-serif; font-size:26px; line-height:0.95; text-transform:uppercase; margin-bottom:8px">QUIETSTORM</div>
+              <p style="font-size:14px; line-height:1.55; margin:0">Behavioural baseline for CI runners — the least-watched, most-privileged machines in most companies. Caught a real dependency-confusion attempt in its first month; alert volume down 70%.</p>
+            </div>
+            <div id="p06" style="border-top:1px solid currentColor; padding-top:18px">
+              <div style="font-family:'Archivo Black',sans-serif; font-size:26px; line-height:0.95; text-transform:uppercase; margin-bottom:8px">BREAKROOM</div>
+              <p style="font-size:14px; line-height:1.55; margin:0">Browser lab where engineers exploit a broken app, fix it, then watch their own exploit stop working. Twelve scenarios, 200+ engineers, quiz scores up 31%.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" style="position:relative; z-index:2; padding:72px 40px; border-bottom:1px solid var(--dv,#26262A)">
+    <div style="max-width:1440px; margin:0 auto">
+      <div style="display:flex; align-items:baseline; flex-wrap:wrap; gap:18px; margin-bottom:32px">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; color:var(--mt,#7A7A80)">[02//EXPERIENCE]</span>
+        <h2 style="font-family:'Archivo Black',sans-serif; font-size:clamp(28px,3.4vw,46px); text-transform:uppercase; letter-spacing:-0.02em; margin:0">SERVICE RECORD</h2>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-left:auto">2019 — PRESENT</span>
+      </div>
+      <div>
+        <div style="display:grid; grid-template-columns:150px minmax(0,1fr) minmax(0,1.1fr); gap:40px; padding:30px 0; border-top:1px solid var(--dv,#26262A)">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; line-height:1.5; color:var(--ac,#FF4A00)">2024 —<br>PRESENT</div>
+          <div>
+            <h3 style="font-size:22px; font-weight:800; margin:0 0 6px; letter-spacing:-0.01em">Software Engineer II, Platform Security</h3>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--mt,#7A7A80)">VANTABLOCK · AMSTERDAM</div>
+          </div>
+          <div>
+            <p style="font-size:14px; line-height:1.7; margin:0 0 10px; text-wrap:pretty">Split between the platform team and the security guild: I build the paved road and then try to drive off it. Own the gateway, the secrets pipeline and the internal threat-model review that every new service passes through.</p>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.8; color:var(--mt,#7A7A80)">▸ Migrated 42 services onto short-lived, workload-identity credentials.<br>▸ Wrote the incident runbook used in the 2025 supply-chain scare.</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:150px minmax(0,1fr) minmax(0,1.1fr); gap:40px; padding:30px 0; border-top:1px solid var(--dv,#26262A)">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; line-height:1.5; color:var(--mt,#7A7A80)">2022 —<br>2024</div>
+          <div>
+            <h3 style="font-size:22px; font-weight:800; margin:0 0 6px; letter-spacing:-0.01em">Backend Engineer</h3>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--mt,#7A7A80)">MERIDIAN FREIGHT · ROTTERDAM</div>
+          </div>
+          <div>
+            <p style="font-size:14px; line-height:1.7; margin:0 0 10px; text-wrap:pretty">Event-driven logistics systems moving real containers around real ports. Learned that correctness under partial failure is a security property, and that "just retry it" is how you double-charge a customer.</p>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.8; color:var(--mt,#7A7A80)">▸ Rebuilt the settlement pipeline as idempotent, replayable stages.<br>▸ Contract tests between eleven services; on-call pages down 45%.</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:150px minmax(0,1fr) minmax(0,1.1fr); gap:40px; padding:30px 0; border-top:1px solid var(--dv,#26262A)">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; line-height:1.5; color:var(--mt,#7A7A80)">2021 —<br>2022</div>
+          <div>
+            <h3 style="font-size:22px; font-weight:800; margin:0 0 6px; letter-spacing:-0.01em">Security Analyst (part-time)</h3>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--mt,#7A7A80)">NORTHGATE CERT · REMOTE</div>
+          </div>
+          <div>
+            <p style="font-size:14px; line-height:1.7; margin:0 0 10px; text-wrap:pretty">Triage rotation on a small incident response team while studying. Read a great deal of other people's logs at unsociable hours, which is the fastest way to learn what an attacker actually leaves behind.</p>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.8; color:var(--mt,#7A7A80)">▸ Triaged 180+ findings; authored 24 of the team's detection rules.<br>▸ Led three post-incident reviews without naming a single culprit.</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:150px minmax(0,1fr) minmax(0,1.1fr); gap:40px; padding:30px 0; border-top:1px solid var(--dv,#26262A); border-bottom:1px solid var(--dv,#26262A)">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; line-height:1.5; color:var(--mt,#7A7A80)">2019 —<br>2021</div>
+          <div>
+            <h3 style="font-size:22px; font-weight:800; margin:0 0 6px; letter-spacing:-0.01em">Junior Developer</h3>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--mt,#7A7A80)">ORENDA LABS · UTRECHT</div>
+          </div>
+          <div>
+            <p style="font-size:14px; line-height:1.7; margin:0 0 10px; text-wrap:pretty">First job: agency work, six clients at a time, everything from a booking system to a municipal data portal. Shipped fast, broke things, and started reading the OWASP list the way other people read the news.</p>
+            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.8; color:var(--mt,#7A7A80)">▸ Found and fixed an IDOR that exposed a client's full customer table.<br>▸ Set up the agency's first CI with linting and dependency scanning.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" style="position:relative; z-index:2; padding:72px 40px; border-bottom:1px solid var(--dv,#26262A)">
+    <div style="max-width:1440px; margin:0 auto">
+      <div style="display:flex; align-items:baseline; flex-wrap:wrap; gap:18px; margin-bottom:32px">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; color:var(--mt,#7A7A80)">[03//SKILLS]</span>
+        <h2 style="font-family:'Archivo Black',sans-serif; font-size:clamp(28px,3.4vw,46px); text-transform:uppercase; letter-spacing:-0.02em; margin:0">SPEC SHEET</h2>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-left:auto">CAPABILITY LOADOUT</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1px; background:var(--dv,#26262A); border:1px solid var(--dv,#26262A)">
+        <div style="background:var(--bg,#0C0C0D)">
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/01</span><span>Go &amp; Rust systems programming</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--ac,#FF4A00)">EXPERT</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/02</span><span>Threat modelling &amp; secure design review</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--ac,#FF4A00)">EXPERT</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/03</span><span>Applied cryptography &amp; key management</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">STRONG</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/04</span><span>Distributed systems &amp; event-driven backends</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">STRONG</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/05</span><span>Kubernetes &amp; infrastructure as code</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">STRONG</span></div>
+        </div>
+        <div style="background:var(--bg,#0C0C0D)">
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/06</span><span>Penetration testing &amp; exploit development</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">STRONG</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/07</span><span>Detection engineering &amp; incident response</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">STRONG</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/08</span><span>Reverse engineering &amp; binary analysis</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">WORKING</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--dv,#26262A); font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/09</span><span>TypeScript &amp; Python tooling</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">STRONG</span></div>
+          <div style="display:grid; grid-template-columns:52px minmax(0,1fr) 92px; align-items:center; gap:14px; padding:15px 20px; font-size:15px"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:var(--mt,#7A7A80)">S/10</span><span>Technical writing &amp; security training</span><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; text-align:right; color:var(--mt,#7A7A80)">STRONG</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="position:relative; z-index:2; padding:72px 40px 0">
+    <div style="max-width:1440px; margin:0 auto">
+      <div style="display:flex; align-items:baseline; flex-wrap:wrap; gap:18px; margin-bottom:32px">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em; color:var(--mt,#7A7A80)">[04//CONTACT]</span>
+        <h2 style="font-family:'Archivo Black',sans-serif; font-size:clamp(28px,3.4vw,46px); text-transform:uppercase; letter-spacing:-0.02em; margin:0">OPEN CHANNEL</h2>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80); margin-left:auto">REPLY WITHIN TWO DAYS</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:56px; align-items:start">
+        <div>
+          <div style="font-family:'Archivo Black',sans-serif; font-size:clamp(32px,5vw,72px); line-height:0.88; letter-spacing:-0.03em; text-transform:uppercase; margin-bottom:22px">BREAK IT,<br><span style="color:var(--ac,#FF4A00)">THEN FIX IT</span></div>
+          <p style="font-size:17px; line-height:1.6; margin:0 0 14px; max-width:38ch; text-wrap:pretty">Happy to talk about security engineering roles, a broken system, or a paper worth reading.</p>
+          <p style="font-size:14px; line-height:1.7; color:var(--mt,#7A7A80); margin:0; max-width:44ch">Encrypted mail welcome — my PGP fingerprint is on the keyserver under the same address.</p>
+        </div>
+        <div style="border-top:1px solid var(--dv,#26262A)">
+          <a href="mailto:kai@mercer.dev" style="display:grid; grid-template-columns:120px minmax(0,1fr) 20px; align-items:center; gap:20px; padding:17px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9)" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">EMAIL</span><span style="font-size:16px">kai@mercer.dev</span><span style="text-align:right">→</span></a>
+          <a href="https://github.com" style="display:grid; grid-template-columns:120px minmax(0,1fr) 20px; align-items:center; gap:20px; padding:17px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9)" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">GITHUB</span><span style="font-size:16px">github.com/kaimercer</span><span style="text-align:right">→</span></a>
+          <a href="https://linkedin.com" style="display:grid; grid-template-columns:120px minmax(0,1fr) 20px; align-items:center; gap:20px; padding:17px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9)" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">LINKEDIN</span><span style="font-size:16px">in/kaimercer</span><span style="text-align:right">→</span></a>
+          <a href="https://mercer.dev" style="display:grid; grid-template-columns:120px minmax(0,1fr) 20px; align-items:center; gap:20px; padding:17px 4px; border-bottom:1px solid var(--dv,#26262A); color:var(--tx,#E7E3D9)" style-hover="background:var(--ac,#FF4A00); color:var(--bg,#0C0C0D)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">WRITING</span><span style="font-size:16px">mercer.dev/notes</span><span style="text-align:right">→</span></a>
+          <div style="display:grid; grid-template-columns:120px minmax(0,1fr) 20px; align-items:center; gap:20px; padding:17px 4px; border-bottom:1px solid var(--dv,#26262A)"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">SIGNAL</span><span style="font-size:16px">@kaim.42</span><span></span></div>
+          <div style="display:grid; grid-template-columns:120px minmax(0,1fr) 20px; align-items:center; gap:20px; padding:17px 4px"><span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">LOCATED</span><span style="font-size:16px">Rotterdam, Netherlands (CET)</span><span></span></div>
+        </div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; padding:32px 0 26px; margin-top:44px; border-top:1px solid var(--dv,#26262A); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mt,#7A7A80)">
+        <span>KAI MERCER — PORTFOLIO 2026</span>
+        <span>BUILT AND THREAT-MODELLED BY HAND</span>
+        <span data-hud-mode="">MODE: SIGNAL</span>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;defaultMode&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;signal&quot;, &quot;hell&quot;],
+    &quot;default&quot;: &quot;signal&quot;,
+    &quot;tsType&quot;: &quot;'signal' | 'hell'&quot;,
+    &quot;section&quot;: &quot;Appearance&quot;
+  },
+  &quot;accent&quot;: {
+    &quot;editor&quot;: &quot;color&quot;,
+    &quot;options&quot;: [&quot;#FF4A00&quot;, &quot;#F0FF3C&quot;, &quot;#3DE0D0&quot;, &quot;#FF2E88&quot;],
+    &quot;default&quot;: &quot;#FF4A00&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Appearance&quot;
+  },
+  &quot;hellAccent&quot;: {
+    &quot;editor&quot;: &quot;color&quot;,
+    &quot;options&quot;: [&quot;#FF1226&quot;, &quot;#E8340A&quot;, &quot;#C40018&quot;, &quot;#FF3D5E&quot;],
+    &quot;default&quot;: &quot;#FF1226&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Appearance&quot;
+  }
+}">
+class Component extends DCLogic {
+  state = { hell: false };
+
+  palettes() {
+    return {
+      signal: { bg: '#0C0C0D', tx: '#E7E3D9', mt: '#7A7A80', dv: '#26262A', ac: this.props.accent || '#FF4A00', hd: 'rgba(12,12,13,0.92)' },
+      hell:   { bg: '#070304', tx: '#F0DCD7', mt: '#946A66', dv: '#3C1417', ac: this.props.hellAccent || '#FF1226', hd: 'rgba(7,3,4,0.92)' }
+    };
+  }
+
+  apply(hell) {
+    const p = this.palettes()[hell ? 'hell' : 'signal'];
+    const r = document.documentElement.style;
+    Object.keys(p).forEach(k => r.setProperty('--' + k, p[k]));
+    document.body.style.background = p.bg;
+    document.documentElement.style.background = p.bg;
+    const glow = document.querySelector('[data-hell-glow]');
+    if (glow) glow.style.opacity = hell ? '1' : '0';
+    const label = document.querySelector('[data-themelabel]');
+    if (label) label.textContent = hell ? 'SIGNAL MODE' : 'HELL MODE';
+    const dot = document.querySelector('[data-themedot]');
+    if (dot) dot.style.background = hell ? 'currentColor' : 'transparent';
+    const mode = document.querySelector('[data-hud-mode]');
+    if (mode) mode.textContent = hell ? 'MODE: HELL' : 'MODE: SIGNAL';
+  }
+
+  toggleTheme = () => {
+    const hell = !this.state.hell;
+    this.setState({ hell });
+    this.apply(hell);
+    try { localStorage.setItem('km-portfolio-mode', hell ? 'hell' : 'signal'); } catch (e) {}
+  };
+
+  componentDidMount() {
+    let hell = (this.props.defaultMode || 'signal') === 'hell';
+    try {
+      const saved = localStorage.getItem('km-portfolio-mode');
+      if (saved) hell = saved === 'hell';
+    } catch (e) {}
+    this.setState({ hell });
+    this.apply(hell);
+    this.setupScroll();
+  }
+
+  componentWillUnmount() {
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+  }
+
+  setupScroll() {
+    const bar = document.querySelector('[data-progress]');
+    const links = Array.from(document.querySelectorAll('[data-navlink]'));
+    const sections = links.map(l => document.getElementById(l.getAttribute('data-navlink'))).filter(Boolean);
+    let ticking = false;
+    const frame = () => {
+      ticking = false;
+      const y = window.scrollY || document.documentElement.scrollTop;
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const pct = Math.min(100, (y / max) * 100);
+      if (bar) bar.style.width = pct + '%';
+      const hs = document.querySelector('[data-hud-scroll]');
+      if (hs) hs.textContent = 'SCROLL ' + String(Math.round(pct)).padStart(3, '0') + '%';
+      let active = sections[0];
+      sections.forEach(s => { if (s.getBoundingClientRect().top <= 140) active = s; });
+      const hsec = document.querySelector('[data-hud-sec]');
+      if (hsec && active) hsec.textContent = 'SEC//' + active.id.toUpperCase();
+      links.forEach(l => {
+        const on = active && l.getAttribute('data-navlink') === active.id;
+        l.style.color = on ? 'var(--ac)' : 'inherit';
+        l.style.opacity = on ? '1' : '0.7';
+      });
+    };
+    this._onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    frame();
+  }
+
+  renderVals() {
+    return { toggleTheme: this.toggleTheme };
+  }
+}
+</script>
+</body>
+</html>
