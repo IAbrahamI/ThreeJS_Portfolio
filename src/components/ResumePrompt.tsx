@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { controlsRef, gameStore } from '../state/gameStore';
+import './ResumePrompt.css';
 
 /**
  * Lightweight overlay shown after the player presses Esc inside the pause menu.

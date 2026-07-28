@@ -1,4 +1,5 @@
 import { useProgress } from '@react-three/drei';
+import './TitleScreen.css';
 import { controlsRef } from '../state/gameStore';
 
 /**

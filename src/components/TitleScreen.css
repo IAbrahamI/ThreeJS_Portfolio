@@ -1,0 +1,113 @@
+/* Title / home screen (3D entry). Uses the global fadeIn keyframe + .key. */
+.title-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Opaque bright-blue: the map loads invisibly behind this. */
+  background:
+    radial-gradient(circle at 50% 22%, #6fc0ff 0%, transparent 62%),
+    linear-gradient(160deg, #3d92f0 0%, #2f7ae6 50%, #1f5fc8 100%);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.title-card {
+  text-align: center;
+  max-width: 540px;
+  padding: 48px 56px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.title-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #8ff6ff;
+}
+
+.title-name {
+  margin-top: 10px;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+}
+
+.title-role {
+  margin-top: 4px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.title-blurb {
+  margin: 20px auto 0;
+  max-width: 420px;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.title-start {
+  margin-top: 32px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #143a4a;
+  background: #8ff6ff;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 238, 255, 0.328);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.title-start:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(0, 240, 255, 0.5);
+  background: #b4faff;
+}
+
+.title-start:disabled {
+  cursor: default;
+  background: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+}
+
+.title-progress {
+  margin: 18px auto 0;
+  width: 220px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.title-progress-fill {
+  height: 100%;
+  background: #8ff6ff;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.title-controls {
+  margin-top: 28px;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
