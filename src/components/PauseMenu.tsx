@@ -5,6 +5,7 @@ import { actionLabels, prettyKey, type Bindings, type MoveAction } from '../stat
 interface PauseMenuProps {
   bindings: Bindings;
   onRebind: (action: MoveAction, code: string) => void;
+  onExit: () => void;
 }
 
 /**
@@ -12,7 +13,7 @@ interface PauseMenuProps {
  * pressed ESC and pointer-lock dropped. Lets them resume, reload the world,
  * rebind movement keys, and tune mouse sensitivity.
  */
-export function PauseMenu({ bindings, onRebind }: PauseMenuProps) {
+export function PauseMenu({ bindings, onRebind, onExit }: PauseMenuProps) {
   const sensitivity = useGameState((s) => s.mouseSensitivity);
   const [listening, setListening] = useState<MoveAction | null>(null);
 
@@ -53,6 +54,7 @@ export function PauseMenu({ bindings, onRebind }: PauseMenuProps) {
         <h2 className="pause-title">Paused</h2>
 
         <button className="pause-primary" onClick={resume}>Resume</button>
+        <button className="pause-tertiary" onClick={onExit}>← Back to 2D Portfolio</button>
 
         <div className="pause-section">
           <div className="pause-row">

@@ -10,7 +10,7 @@ import { PauseMenu } from './components/PauseMenu';
 import { ResumePrompt } from './components/ResumePrompt';
 import { FocusPanel } from './components/FocusPanel';
 import { LandingPage } from './components/LandingPage';
-import { gameStore, useGameState } from './state/gameStore';
+import { gameStore, useGameState, controlsRef } from './state/gameStore';
 import { defaultBindings, toKeyboardMap, type MoveAction } from './state/keybindings';
 
 export default function App() {
@@ -84,7 +84,18 @@ export default function App() {
         )}
 
         {phase === 'title' && <TitleScreen />}
-        {phase === 'paused' && <PauseMenu bindings={bindings} onRebind={rebind} />}
+        {phase === 'paused' && (
+          <PauseMenu
+            bindings={bindings}
+            onRebind={rebind}
+            onExit={() => {
+              // Reset the 3D state so re-entering starts fresh at the title.
+              controlsRef.current?.unlock();
+              gameStore.set({ phase: 'title', room: 'hub' });
+              setEntered3D(false);
+            }}
+          />
+        )}
         {phase === 'resume' && <ResumePrompt />}
         {phase === 'focus' && <FocusPanel />}
       </KeyboardControls>

@@ -10,17 +10,17 @@ import { useEffect, useRef, useState } from 'react';
 const GH = 'https://github.com/IAbrahamI';
 
 const PROJECTS = [
-  { id: 'P/01', name: 'Selfhosted Server', cat: 'Infrastructure', kind: 'SELF-HOSTED', url: `${GH}/selfhostedServer`,
+  { id: 'P/01', name: 'Selfhosted Server', cat: 'Infrastructure', kind: 'SELF-HOSTED', url: `${GH}/selfhostedServer`, img: '/assets/selfHosted.png',
     desc: 'Infrastructure as code. Every config and script I use to set up and run my own server, reproducibly.', tech: ['Docker', 'Linux', 'Nginx'] },
-  { id: 'P/02', name: 'Kuroro', cat: 'Mobile App', kind: 'MOBILE', url: `${GH}/Kuroro`,
+  { id: 'P/02', name: 'Kuroro', cat: 'Mobile App', kind: 'MOBILE', url: `${GH}/Kuroro`, img: '/assets/KuroroApp.jpg',
     desc: 'A mobile app that reads manga from my personal API, so my whole library travels with me.', tech: ['Mobile', 'REST API'] },
-  { id: 'P/03', name: 'Pentest Assistant', cat: 'Security Tooling', kind: 'SECURITY', url: `${GH}/Pentest_Assistant`,
+  { id: 'P/03', name: 'Pentest Assistant', cat: 'Security Tooling', kind: 'SECURITY', url: `${GH}/Pentest_Assistant`, img: '/assets/PentestAssistant.png',
     desc: 'Tooling that streamlines security assessments and penetration testing tasks, from recon to reporting.', tech: ['Python', 'Security'] },
-  { id: 'P/04', name: 'Portfolio 2026', cat: 'Interactive 3D', kind: 'WEB', url: `${GH}/ThreeJS_Portfolio`,
+  { id: 'P/04', name: 'Portfolio 2026', cat: 'Interactive 3D', kind: 'WEB', url: `${GH}/ThreeJS_Portfolio`, img: '/assets/3DPortfolio.png',
     desc: 'This world. An interactive 3D portfolio you can walk through, built with React, Three.js and Rapier physics.', tech: ['React', 'Three.js', 'Rapier'] },
-  { id: 'P/05', name: 'Password Manager', cat: 'Applied Security', kind: 'SOLO', url: `${GH}/Password_Manager`,
+  { id: 'P/05', name: 'Password Manager', cat: 'Applied Security', kind: 'SOLO', url: `${GH}/Password_Manager`, img: '/assets/Password_Manager.png',
     desc: 'A secure password manager, designed and built entirely from scratch.', tech: ['Encryption', 'From scratch'] },
-  { id: 'P/06', name: 'Manga API Server', cat: 'Backend / API', kind: 'SELF-HOSTED', url: `${GH}/MangaAPIServer`,
+  { id: 'P/06', name: 'Manga API Server', cat: 'Backend / API', kind: 'SELF-HOSTED', url: `${GH}/MangaAPIServer`, img: '/assets/mangaAPI.png',
     desc: 'A self-hosted API that serves manga data, running on my own server and powering Kuroro.', tech: ['Node', 'API', 'Self-hosted'] },
 ];
 
@@ -36,7 +36,7 @@ const EXPERIENCE = [
 ];
 
 const SKILLS_A = [
-  ['S/01', 'Python', 'STRONG'], ['S/02', 'JavaScript & TypeScript', 'STRONG'], ['S/03', 'Java', 'WORKING'],
+  ['S/01', 'Python', 'EXPERT'], ['S/02', 'JavaScript & TypeScript', 'STRONG'], ['S/03', 'Java', 'STRONG'],
   ['S/04', 'Docker & Kubernetes', 'STRONG'], ['S/05', 'SQL & Databases', 'STRONG'], ['S/06', 'Git & Version Control', 'EXPERT'],
 ];
 const SKILLS_B = [
@@ -45,7 +45,7 @@ const SKILLS_B = [
 ];
 
 const CONTACT = [
-  { label: 'EMAIL', value: 'abraham.neidhardt@outlook.com', url: 'mailto:abraham.neidhardt@outlook.com' },
+  { label: 'EMAIL', value: 'abraham.neidhardt@proton.me', url: 'mailto:abraham.neidhardt@proton.me' },
   { label: 'GITHUB', value: 'github.com/IAbrahamI', url: GH },
   { label: 'INSTAGRAM', value: 'instagram.com/ab_neid_', url: 'https://instagram.com/ab_neid_' },
   { label: 'WEBSITE', value: 'abraham-neidhardt.com', url: 'https://abraham-neidhardt.com' },
@@ -65,6 +65,12 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
   });
   const [progress, setProgress] = useState(0);
   const [section, setSection] = useState('about');
+  const [menuOpen, setMenuOpen] = useState(false);
+  // The 3D world needs a mouse + keyboard (pointer-lock, WASD), so only offer it
+  // on PCs and laptops — devices that report a fine pointer with hover.
+  const [isPC] = useState(() => {
+    try { return window.matchMedia('(hover: hover) and (pointer: fine)').matches; } catch { return true; }
+  });
 
   useEffect(() => {
     try { localStorage.setItem('an-portfolio-theme', dark ? 'dark' : 'light'); } catch { /* ignore */ }
@@ -88,13 +94,36 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
     return () => root.removeEventListener('scroll', onScroll);
   }, []);
 
-  const go = (id: string) => rootRef.current?.querySelector(`#${id}`)?.scrollIntoView({ behavior: 'smooth' });
+  // Reveal blocks on scroll (both directions), with a light per-sibling stagger.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const sel = '.lp-sechead, .lp-hero-grid > div, .lp-stat, .lp-prow, .lp-pcard, .lp-xp, .lp-skillcol, .lp-contact-grid > div';
+    const targets = Array.from(root.querySelectorAll<HTMLElement>(sel));
+    targets.forEach((el) => {
+      const idx = el.parentElement ? Array.from(el.parentElement.children).indexOf(el) : 0;
+      el.style.transitionDelay = `${Math.min(Math.max(idx, 0), 6) * 55}ms`;
+      el.classList.add('lp-reveal');
+    });
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.target.classList.toggle('lp-in', e.isIntersecting)),
+      { root, rootMargin: '0px 0px -8% 0px', threshold: 0.06 },
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const go = (id: string) => {
+    setMenuOpen(false);
+    rootRef.current?.querySelector(`#${id}`)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="lp-root" ref={rootRef} data-theme={dark ? 'dark' : 'light'}>
       <style>{CSS}</style>
 
       <div aria-hidden className="lp-grid-bg" />
+      <Deco />
       <div className="lp-progress"><div className="lp-progress-fill" style={{ width: `${progress}%` }} /></div>
 
       {/* Top nav */}
@@ -105,16 +134,20 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
           <span>SOFTWARE ENGINEER / SECURITY</span>
           <span className="lp-mt">SWITZERLAND · CET</span>
         </div>
-        <div className="lp-nav-links">
-          {NAV.map(([id, label]) => (
-            <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); go(id); }}
-               className={section === id ? 'lp-navlink lp-on' : 'lp-navlink'}>{label}</a>
-          ))}
+        <button type="button" className="lp-burger" aria-label="Menu" aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((o) => !o)}>{menuOpen ? '✕' : '☰'}</button>
+        <div className={`lp-nav-actions ${menuOpen ? 'lp-open' : ''}`}>
+          <div className="lp-nav-links">
+            {NAV.map(([id, label]) => (
+              <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); go(id); }}
+                 className={section === id ? 'lp-navlink lp-on' : 'lp-navlink'}>{label}</a>
+            ))}
+          </div>
+          {isPC && <button type="button" className="lp-3dbtn" onClick={onEnter}>◈ 3D PORTFOLIO</button>}
+          <button type="button" className="lp-theme" onClick={() => setDark((d) => !d)}>
+            <span className="lp-theme-dot" />{dark ? 'LIGHT MODE' : 'DARK MODE'}
+          </button>
         </div>
-        <button type="button" className="lp-3dbtn" onClick={onEnter}>◈ 3D PORTFOLIO</button>
-        <button type="button" className="lp-theme" onClick={() => setDark((d) => !d)}>
-          <span className="lp-theme-dot" />{dark ? 'LIGHT MODE' : 'DARK MODE'}
-        </button>
       </div>
 
       {/* HUD */}
@@ -137,7 +170,9 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
               <p className="lp-lead">Software engineer studying cybersecurity. Building systems in the morning, and learning how to break them in the afternoon.</p>
               <p className="lp-body">I am a software engineer passionate about modern architecture, agile environments and modern security practices. Currently balancing a 60% engineering role while pursuing a degree in Cybersecurity, I bridge the gap between building scalable software and protecting it. As a native Spanish speaker fluent in English and German, with a working knowledge of French, I bring a global perspective to international teams.</p>
               <div className="lp-cta-row">
-                <button type="button" className="lp-cta-primary" onClick={onEnter}>SWITCH TO 3D PORTFOLIO →</button>
+                <button type="button" className="lp-cta-primary" onClick={isPC ? onEnter : () => go('work')}>
+                  {isPC ? 'SWITCH TO 3D PORTFOLIO →' : 'VIEW PROJECTS →'}
+                </button>
                 <a href="#contact" onClick={(e) => { e.preventDefault(); go('contact'); }} className="lp-cta-ghost">GET IN TOUCH</a>
               </div>
             </div>
@@ -191,7 +226,7 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
                 <div className="lp-pcard-head lp-mono lp-mt"><span>{p.id} · {p.cat.toUpperCase()}</span><span className="lp-ac">{p.kind}</span></div>
                 <h3 className="lp-pcard-title">{p.name}</h3>
                 <p className="lp-body lp-pcard-desc">{p.desc}</p>
-                <div className="lp-drop"><span className="lp-mono lp-mt">DROP: SCREENSHOT</span></div>
+                <div className="lp-shot"><img src={p.img} alt={p.name} loading="lazy" /></div>
                 <div className="lp-tags">{p.tech.map((t) => <span key={t} className="lp-tag lp-mono">{t}</span>)}</div>
                 <a href={p.url} target="_blank" rel="noopener noreferrer" className="lp-pcard-link lp-mono">OPEN ON GITHUB →</a>
               </div>
@@ -204,7 +239,7 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
       <section id="experience" className="lp-section">
         <div className="lp-wrap">
           <SectionHead tag="[02//SERVICE RECORD]" title="EXPERIENCE" note="2018 to Present" />
-          {EXPERIENCE.map((e) => (
+          {EXPERIENCE.slice().reverse().map((e) => (
             <div key={e.role} className="lp-xp">
               <div className="lp-xp-period lp-mono lp-ac">{e.period}</div>
               <div>
@@ -271,6 +306,43 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
   );
 }
 
+/** Subtle sci-fi HUD ornaments in the empty side gutters (desktop only). */
+function Deco() {
+  return (
+    <div aria-hidden className="lp-deco">
+      <span className="lp-corner lp-corner-tl" />
+      <span className="lp-corner lp-corner-tr" />
+      <span className="lp-corner lp-corner-bl" />
+      <span className="lp-corner lp-corner-br" />
+
+      {/* Left: measurement rail with a small reticle. */}
+      <svg className="lp-rail-l" viewBox="0 0 44 300" fill="none">
+        <circle cx="15" cy="18" r="9" stroke="currentColor" strokeWidth="1" />
+        <circle cx="15" cy="18" r="2.4" fill="currentColor" />
+        <line x1="15" y1="34" x2="15" y2="292" stroke="currentColor" strokeWidth="1" />
+        {Array.from({ length: 13 }).map((_, i) => (
+          <line key={i} x1="15" y1={44 + i * 19} x2={i % 2 ? 23 : 31} y2={44 + i * 19} stroke="currentColor" strokeWidth="1" />
+        ))}
+      </svg>
+
+      {/* Right: slowly rotating segmented ring. */}
+      <svg className="lp-ring" viewBox="0 0 120 120" fill="none">
+        <circle cx="60" cy="60" r="54" stroke="currentColor" strokeWidth="1.6" strokeDasharray="70 26 46 26 30 26" />
+        <circle cx="60" cy="60" r="40" stroke="currentColor" strokeWidth="1" strokeDasharray="3 9" opacity="0.7" />
+        <circle cx="60" cy="60" r="6" stroke="currentColor" strokeWidth="1.4" />
+        <line x1="60" y1="0" x2="60" y2="15" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+
+      {/* Right: dashed tick column. */}
+      <svg className="lp-rail-r" viewBox="0 0 20 224" fill="none">
+        {Array.from({ length: 18 }).map((_, i) => (
+          <line key={i} x1="10" y1={6 + i * 12} x2="10" y2={12 + i * 12} stroke="currentColor" strokeWidth="2" opacity={i % 3 ? 0.35 : 0.9} />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 function SectionHead({ tag, title, note }: { tag: string; title: string; note: string }) {
   return (
     <div className="lp-sechead">
@@ -285,7 +357,7 @@ const CSS = `
 .lp-root { position:fixed; inset:0; height:100vh; overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth;
   font-family:'Archivo',Helvetica,sans-serif; background:var(--lp-bg); color:var(--lp-tx); z-index:100; }
 .lp-root[data-theme="dark"] { --lp-bg:#0C0D10; --lp-tx:#EAF1F0; --lp-mt:#7C8A89; --lp-dv:#23292C; --lp-ac:#3DE0D0; --lp-hd:rgba(12,13,16,0.9); --lp-drop:rgba(255,255,255,0.05); }
-.lp-root[data-theme="light"] { --lp-bg:#F5F7F6; --lp-tx:#132322; --lp-mt:#5C6B69; --lp-dv:#E1E6E4; --lp-ac:#0E9E8F; --lp-hd:rgba(245,247,246,0.9); --lp-drop:rgba(0,0,0,0.045); }
+.lp-root[data-theme="light"] { --lp-bg:#F5F7F6; --lp-tx:#132322; --lp-mt:#5C6B69; --lp-dv:#E1E6E4; --lp-ac:#1488C9; --lp-hd:rgba(245,247,246,0.9); --lp-drop:rgba(0,0,0,0.045); }
 .lp-root * { box-sizing:border-box; }
 .lp-mono { font-family:'JetBrains Mono',monospace; }
 .lp-mt { color:var(--lp-mt); }
@@ -301,6 +373,8 @@ const CSS = `
 .lp-brand { display:flex; align-items:center; gap:10px; padding:0 16px; background:var(--lp-ac); color:var(--lp-bg); font-weight:700; }
 .lp-brand-dot { width:8px; height:8px; background:var(--lp-bg); }
 .lp-nav-meta { display:flex; align-items:center; gap:20px; padding:8px 20px; color:var(--lp-tx); flex:1; min-width:200px; }
+.lp-nav-actions { display:flex; align-items:stretch; }
+.lp-burger { display:none; border:0; border-left:1px solid var(--lp-dv); background:transparent; color:var(--lp-tx); font-size:18px; line-height:1; padding:0 18px; cursor:pointer; min-height:44px; }
 .lp-nav-links { display:flex; align-items:center; gap:18px; padding:8px 20px; border-left:1px solid var(--lp-dv); }
 .lp-navlink { color:var(--lp-tx); text-decoration:none; opacity:.7; }
 .lp-navlink:hover { color:var(--lp-ac); opacity:1; }
@@ -342,7 +416,8 @@ const CSS = `
 .lp-stat-n { font-family:'Archivo Black',sans-serif; font-size:44px; line-height:1; }
 .lp-stat-l { font-size:10px; letter-spacing:.16em; text-transform:uppercase; margin-top:8px; }
 .lp-marquee { margin:48px -40px -72px; border-top:1px solid var(--lp-dv); overflow:hidden; height:38px; display:flex; align-items:center; }
-.lp-marquee-track { display:flex; width:200%; animation:lp-marquee 34s linear infinite; white-space:nowrap; font-size:10px; letter-spacing:.2em; color:var(--lp-mt); text-transform:uppercase; }
+.lp-marquee-track { display:flex; width:max-content; animation:lp-marquee 34s linear infinite; white-space:nowrap; font-size:10px; letter-spacing:.2em; color:var(--lp-mt); text-transform:uppercase; }
+.lp-marquee-track > span { flex:none; display:inline-flex; }
 .lp-marquee-track > span > span { padding-right:30px; }
 
 .lp-sechead { display:flex; align-items:baseline; flex-wrap:wrap; gap:18px; margin-bottom:32px; }
@@ -357,7 +432,7 @@ const CSS = `
 .lp-prow:hover .lp-mt, .lp-prow:hover .lp-ac { color:var(--lp-bg); }
 .lp-prow-name { font-family:'Archivo',sans-serif; font-weight:800; font-size:19px; }
 .lp-prow-arrow { text-align:right; }
-.lp-pcards { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1px; background:var(--lp-dv); border:1px solid var(--lp-dv); }
+.lp-pcards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--lp-dv); border:1px solid var(--lp-dv); }
 .lp-pcard { background:var(--lp-bg); padding:28px; display:flex; flex-direction:column; }
 .lp-pcard-head { display:flex; justify-content:space-between; gap:16px; font-size:10px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:16px; }
 .lp-pcard-title { font-family:'Archivo Black',sans-serif; font-size:clamp(24px,2.6vw,32px); line-height:.95; letter-spacing:-.02em; text-transform:uppercase; margin:0 0 14px; }
@@ -365,6 +440,8 @@ const CSS = `
 .lp-drop { aspect-ratio:16/10; background:repeating-linear-gradient(135deg,var(--lp-drop) 0 6px,transparent 6px 12px);
   border:1px solid var(--lp-dv); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
 .lp-drop .lp-mono { font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
+.lp-shot { aspect-ratio:16/10; border:1px solid var(--lp-dv); overflow:hidden; margin-bottom:18px; background:var(--lp-drop); }
+.lp-shot img { width:100%; height:100%; object-fit:contain; display:block; }
 .lp-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
 .lp-tag { border:1px solid var(--lp-dv); padding:6px 10px; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--lp-mt); }
 .lp-pcard-link { margin-top:auto; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--lp-ac); text-decoration:none; }
@@ -398,16 +475,54 @@ const CSS = `
 .lp-foot-3d { border:1px solid var(--lp-ac); color:var(--lp-ac); background:transparent; padding:10px 16px; font:inherit; letter-spacing:.16em; text-transform:uppercase; cursor:pointer; }
 .lp-foot-3d:hover { background:var(--lp-ac); color:var(--lp-bg); }
 
+/* HUD side decorations */
+.lp-deco { position:fixed; inset:0; z-index:1; pointer-events:none; }
+.lp-corner { position:fixed; width:20px; height:20px; opacity:.5; color:var(--lp-ac); }
+.lp-corner-tl { top:56px; left:12px; border-top:1px solid currentColor; border-left:1px solid currentColor; }
+.lp-corner-tr { top:56px; right:12px; border-top:1px solid currentColor; border-right:1px solid currentColor; }
+.lp-corner-bl { bottom:12px; left:12px; border-bottom:1px solid currentColor; border-left:1px solid currentColor; }
+.lp-corner-br { bottom:12px; right:12px; border-bottom:1px solid currentColor; border-right:1px solid currentColor; }
+.lp-rail-l { position:fixed; left:16px; top:50%; transform:translateY(-50%); width:44px; height:300px; color:var(--lp-mt); opacity:.45; }
+.lp-ring { position:fixed; right:24px; top:30%; width:108px; height:108px; color:var(--lp-ac); opacity:.3; animation:lp-spin 44s linear infinite; }
+.lp-rail-r { position:fixed; right:22px; top:56%; width:20px; height:224px; color:var(--lp-mt); opacity:.45; }
+
+/* Scroll reveal */
+.lp-reveal { opacity:0; transform:translateY(26px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
+.lp-reveal.lp-in { opacity:1; transform:none; }
+
+@keyframes lp-spin { to { transform:rotate(360deg); } }
 @keyframes lp-marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 @keyframes lp-blink { 0%,60% { opacity:1; } 61%,100% { opacity:.15; } }
+@media (prefers-reduced-motion:reduce) {
+  .lp-reveal { opacity:1; transform:none; transition:none; }
+  .lp-ring, .lp-marquee-track, .lp-blink { animation:none; }
+}
 
-@media (max-width:820px) {
+@media (max-width:1280px) { .lp-rail-l, .lp-ring, .lp-rail-r { display:none; } }
+@media (max-width:1080px) {
+  .lp-pcards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:860px) {
   .lp-section { padding:56px 20px; }
-  #about { padding-top:150px; }
+  #about { padding-top:112px; }
+  .lp-hud { display:none; }
+  .lp-corner { display:none; }
   .lp-nav-meta { display:none; }
+  .lp-burger { display:flex; align-items:center; margin-left:auto; }
+  .lp-nav-actions { display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:stretch;
+    background:var(--lp-hd); backdrop-filter:blur(8px); border-bottom:1px solid var(--lp-dv); }
+  .lp-nav-actions.lp-open { display:flex; }
+  .lp-nav-links { flex-direction:column; align-items:stretch; gap:0; padding:0; border-left:0; }
+  .lp-navlink { padding:13px 20px; border-bottom:1px solid var(--lp-dv); opacity:1; }
+  .lp-3dbtn, .lp-theme { border-left:0; border-top:1px solid var(--lp-dv); justify-content:center; padding:15px; }
   .lp-marquee { margin:40px -20px -56px; }
   .lp-xp { grid-template-columns:1fr; gap:14px; }
   .lp-prow { grid-template-columns:44px 1fr 40px; }
   .lp-prow > span:nth-child(3), .lp-prow > span:nth-child(4) { display:none; }
+}
+@media (max-width:640px) {
+  .lp-pcards { grid-template-columns:1fr; }
+  .lp-hero-grid, .lp-contact-grid { gap:28px; }
+  .lp-footer { justify-content:flex-start; }
 }
 `;
