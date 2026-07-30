@@ -9,19 +9,23 @@ import './LandingPage.css';
  */
 
 const GH = 'https://github.com/IAbrahamI';
+/** Current year, so the availability banner never goes stale. */
+const YEAR = new Date().getFullYear();
 
 const PROJECTS = [
   { id: 'P/01', name: 'Selfhosted Server', cat: 'Infrastructure', kind: 'SELF-HOSTED', url: `${GH}/selfhostedServer`, img: '/assets/selfHosted.png',
     desc: 'Infrastructure as code. Every config and script I use to set up and run my own server, reproducibly.', tech: ['Docker', 'Linux', 'Nginx'] },
-  { id: 'P/02', name: 'Kuroro', cat: 'Mobile App', kind: 'MOBILE', url: `${GH}/Kuroro`, img: '/assets/KuroroApp.jpg',
-    desc: 'A mobile app that reads manga from my personal API, so my whole library travels with me.', tech: ['Mobile', 'REST API'] },
+  { id: 'P/02', name: 'Handheld RF Gadget', cat: 'Embedded / RF', kind: 'HARDWARE', url: `${GH}/Wifi_Scanner`, img: '/assets/Gadged_Menu.jpg',
+    desc: 'Multi-boot firmware for a pocket-sized passive RF scanner. A touch launcher boots a Wi-Fi CSI radar, a Wi-Fi and BLE sniffer, or a five-tool RF toolkit, each from its own flash partition.', tech: ['ESP32-S3', 'C++', 'PlatformIO', 'WiFi & BLE'] },
   { id: 'P/03', name: 'Pentest Assistant', cat: 'Security Tooling', kind: 'SECURITY', url: `${GH}/Pentest_Assistant`, img: '/assets/PentestAssistant.png',
     desc: 'Tooling that streamlines security assessments and penetration testing tasks, from recon to reporting.', tech: ['Python', 'Security'] },
   { id: 'P/04', name: 'Portfolio 2026', cat: 'Interactive 3D', kind: 'WEB', url: `${GH}/ThreeJS_Portfolio`, img: '/assets/3DPortfolio.png',
     desc: 'This world. An interactive 3D portfolio you can walk through, built with React, Three.js and Rapier physics.', tech: ['React', 'Three.js', 'Rapier'] },
   { id: 'P/05', name: 'Password Manager', cat: 'Applied Security', kind: 'SOLO', url: `${GH}/Password_Manager`, img: '/assets/Password_Manager.png',
     desc: 'A secure password manager, designed and built entirely from scratch.', tech: ['Encryption', 'From scratch'] },
-  { id: 'P/06', name: 'Manga API Server', cat: 'Backend / API', kind: 'SELF-HOSTED', url: `${GH}/MangaAPIServer`, img: '/assets/mangaAPI.png',
+  { id: 'P/06', name: 'Kuroro', cat: 'Mobile App', kind: 'MOBILE', url: `${GH}/Kuroro`, img: '/assets/KuroroApp.jpg',
+    desc: 'A mobile app that reads manga from my personal API, so my whole library travels with me.', tech: ['Mobile', 'REST API'] },
+  { id: 'P/07', name: 'Manga API Server', cat: 'Backend / API', kind: 'SELF-HOSTED', url: `${GH}/MangaAPIServer`, img: '/assets/mangaAPI.png',
     desc: 'A self-hosted API that serves manga data, running on my own server and powering Kuroro.', tech: ['Node', 'API', 'Self-hosted'] },
 ];
 
@@ -54,7 +58,7 @@ const CONTACT = [
 ];
 
 const STATS = [
-  ['6', 'PROJECTS SHIPPED'], ['12', 'SKILLS IN LOADOUT'], ['4', 'LANGUAGES SPOKEN'], ['60%', 'ENGINEERING ROLE'],
+  ['7', 'PROJECTS SHIPPED'], ['12', 'SKILLS IN LOADOUT'], ['4', 'LANGUAGES SPOKEN'], ['60%', 'ENGINEERING ROLE'],
 ];
 
 const NAV = [['about', 'ABOUT'], ['work', 'PROJECTS'], ['experience', 'EXPERIENCE'], ['skills', 'SKILLS'], ['contact', 'CONTACT']] as const;
@@ -159,7 +163,7 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
       <section id="about" className="lp-section">
         <div className="lp-wrap">
           <div className="lp-eyebrow">
-            <span><span className="lp-blink" /> SYS.ONLINE // OPEN TO 2026 ENGINEERING & SECURITY ROLES</span>
+            <span><span className="lp-blink" /> SYS.ONLINE // OPEN TO {YEAR} ENGINEERING &amp; SECURITY ROLES</span>
             <span className="lp-mt">FILE 00 · OPERATOR DOSSIER</span>
           </div>
           <h1 className="lp-hero">ABRAHAM<br /><span className="lp-ac">NEIDHARDT</span></h1>
@@ -294,7 +298,7 @@ export function LandingPage({ onEnter }: { onEnter: () => void }) {
             </div>
           </div>
           <div className="lp-footer lp-mono lp-mt">
-            <span>ABRAHAM NEIDHARDT · PORTFOLIO 2026</span>
+            <span>ABRAHAM NEIDHARDT · PORTFOLIO {YEAR}</span>
             <span>BUILT AND DESIGNED BY HAND</span>
             {isPC && <button type="button" className="lp-foot-3d" onClick={onEnter}>ENTER 3D PORTFOLIO →</button>}
           </div>

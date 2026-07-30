@@ -91,9 +91,9 @@ export const eastHotspots: ProjectHotspot[] = [
     rotation: [0, Math.PI, 0],
   },
   {
-    name: 'Manga API Server',
-    description: 'Self-hosted API that serves manga data, running on my own server.',
-    githubUrl: 'https://github.com/IAbrahamI/MangaAPIServer',
+    name: 'Handheld RF Gadget',
+    description: 'Multi-boot ESP32-S3 firmware for a pocket-sized passive Wi-Fi and BLE scanner.',
+    githubUrl: 'https://github.com/IAbrahamI/Wifi_Scanner',
     position: [3.5, 2.13, 4],
     rotation: [0, Math.PI, 0],
   },
